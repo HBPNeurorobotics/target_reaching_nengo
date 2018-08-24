@@ -2,7 +2,6 @@
 
 target reaching code with primitives, arm_robot and Nengo
 
-# motion control using nengo and ros
 
 ## code main repository
 the full code repo for snn nengo is here --> auf branch pub_sub:
