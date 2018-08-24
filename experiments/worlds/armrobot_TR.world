@@ -1,0 +1,2901 @@
+<sdf version='1.5'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+    </model>
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+      <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='HoLLiE'>
+      <pose frame=''>1 -1 0.5 0 -0 0</pose>
+      <link name='base_link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1000</mass>
+          <inertia>
+            <ixx>100</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>100</iyy>
+            <iyz>0</iyz>
+            <izz>100</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_collision'>
+          <pose frame=''>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_Table_0_0_0_0_0_0_0.000.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='base_link_collision_base_link_1'>
+          <pose frame=''>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_Table_0_0_0_0_0_0_0.001.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='base_link_collision_base_link_2'>
+          <pose frame=''>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_Table_0_0_0_0_0_0_0_0_0.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='base_link_visual'>
+          <pose frame=''>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_Table_0_0_0_0_0_0_0_0_0.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <link name='hollie_real_left_arm_0_joint_link'>
+        <pose frame=''>0 -0.4 1 0 -0 1.62316</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.29364</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_arm_0_joint' type='prismatic'>
+        <child>hollie_real_left_arm_0_joint_link</child>
+        <parent>base_link</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000'>
+        <pose frame=''>0 -0.4 1.11 0 -0 1.62316</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.29364</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000_collision'>
+          <pose frame=''>0 0 1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000_visual'>
+          <pose frame=''>0 0 1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_arm_1_joint' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000</child>
+        <parent>hollie_real_left_arm_0_joint_link</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-1.37255e+20</lower>
+            <upper>1.37255e+20</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001'>
+        <pose frame=''>0 -0.4 1.11 1.5708 -0 1.62316</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1.68311</mass>
+          <inertia>
+            <ixx>0.03</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.03</iyy>
+            <iyz>0</iyz>
+            <izz>0.03</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001_collision'>
+          <pose frame=''>-0 1e-06 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001_visual'>
+          <pose frame=''>-0 1e-06 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_arm_2_joint' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000</parent>
+        <axis>
+          <xyz>0.99863 0.052336 0</xyz>
+          <limit>
+            <lower>-2864.79</lower>
+            <upper>2864.79</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002'>
+        <pose frame=''>0 -0.4 1.46 1.5708 -0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>2.1</mass>
+          <inertia>
+            <ixx>0.03</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.03</iyy>
+            <iyz>0</iyz>
+            <izz>0.03</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002_collision'>
+          <pose frame=''>-0 1e-06 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002_visual'>
+          <pose frame=''>-0 1e-06 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_arm_3_joint' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001</parent>
+        <axis>
+          <xyz>-0.99863 -0.052336 0</xyz>
+          <limit>
+            <lower>-1.36749e+20</lower>
+            <upper>1.36749e+20</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003'>
+        <pose frame=''>0 -0.4 1.46 0 -0 1.62316</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1.68311</mass>
+          <inertia>
+            <ixx>0.03</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.03</iyy>
+            <iyz>0</iyz>
+            <izz>0.03</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003_collision'>
+          <pose frame=''>0 -0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003_visual'>
+          <pose frame=''>0 -0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_arm_4_joint' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-4.52188e+19</lower>
+            <upper>4.52188e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004'>
+        <pose frame=''>-0.005256 -0.400275 1.765 1.5708 -0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.807</mass>
+          <inertia>
+            <ixx>0.03</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.03</iyy>
+            <iyz>0</iyz>
+            <izz>0.03</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004_collision'>
+          <pose frame=''>-0 1e-06 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004_visual'>
+          <pose frame=''>-0 1e-06 -0 1e-06 -2e-06 -0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_arm_5_joint' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003</parent>
+        <axis>
+          <xyz>-0.99863 -0.052336 0</xyz>
+          <limit>
+            <lower>-1.36749e+20</lower>
+            <upper>1.36749e+20</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005'>
+        <pose frame=''>-0.005256 -0.400275 1.765 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.819</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005_collision'>
+          <pose frame=''>-0 0 1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005_visual'>
+          <pose frame=''>-0 0 1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_arm_6_joint' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-4.52188e+19</lower>
+            <upper>4.52188e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006'>
+        <pose frame=''>-0.005256 -0.400276 1.865 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006_collision'>
+          <pose frame=''>-0 1e-06 -0.031998 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006_visual'>
+          <pose frame=''>-0 1e-06 -0.031998 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_base_joint' type='prismatic'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007'>
+        <pose frame=''>-0.018368 -0.400963 1.865 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007_collision'>
+          <pose frame=''>-0 0.01313 2e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007_visual'>
+          <pose frame=''>-0 0.01313 2e-06 3.14159 0 -1e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f4' type='prismatic'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008'>
+        <pose frame=''>0.008741 -0.416465 1.865 -0 0.261799 0.05236</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008_collision'>
+          <pose frame=''>0 -1e-06 0.024418 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008_visual'>
+          <pose frame=''>0 -1e-06 0.024418 3.14159 3e-06 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Thumb_Opposition' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007</parent>
+        <axis>
+          <xyz>0.258464 0.013546 0.965926</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.15805e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_Thumb_Helper_link'>
+        <pose frame=''>0.02062 -0.415843 1.90939 -3.14159 -1.309 0.05236</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Thumb_Helper' type='prismatic'>
+        <child>hollie_real_left_hand_Thumb_Helper_link</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008</parent>
+        <axis>
+          <xyz>0.258465 0.013546 0.965926</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009'>
+        <pose frame=''>0.02062 -0.415843 1.90939 -1.8834 -0.570602 -1.3456</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009_collision'>
+          <pose frame=''>1e-06 0 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009_visual'>
+          <pose frame=''>1e-06 0 -0 -3.14159 0 1e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Thumb_Flexion' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009</child>
+        <parent>hollie_real_left_hand_Thumb_Helper_link</parent>
+        <axis>
+          <xyz>0.964602 0.050553 -0.258819</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.11982e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010'>
+        <pose frame=''>0.029734 -0.455628 1.93559 -1.8834 -0.570602 -1.3456</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010_collision'>
+          <pose frame=''>-1e-06 -1e-06 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010_visual'>
+          <pose frame=''>-1e-06 -1e-06 0 3.14159 -0 2e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j3' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009</parent>
+        <axis>
+          <xyz>0.964602 0.050553 -0.258819</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.15185e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.011'>
+        <pose frame=''>0.035372 -0.480238 1.95179 -1.8834 -0.570602 -1.3456</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.011_collision'>
+          <pose frame=''>-0 -0 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.011.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.011_visual'>
+          <pose frame=''>-0 -0 -0 3.14159 -0 2e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.011.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j4' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.011</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010</parent>
+        <axis>
+          <xyz>0.964602 0.050553 -0.258819</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>3.07139e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_f1_link'>
+        <pose frame=''>-0.018368 -0.400963 1.865 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f1' type='prismatic'>
+        <child>hollie_real_left_hand_f1_link</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_f2_link'>
+        <pose frame=''>-0.018368 -0.400963 1.865 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f2' type='prismatic'>
+        <child>hollie_real_left_hand_f2_link</child>
+        <parent>hollie_real_left_hand_f1_link</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_f3_link'>
+        <pose frame=''>-0.018368 -0.400963 1.865 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f3' type='prismatic'>
+        <child>hollie_real_left_hand_f3_link</child>
+        <parent>hollie_real_left_hand_f2_link</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012'>
+        <pose frame=''>-0.017059 -0.425928 1.975 -1.93916 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012_collision'>
+          <pose frame=''>0 -0 0.01321 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012_visual'>
+          <pose frame=''>0 -0 0.01321 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_index_spread' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012</child>
+        <parent>hollie_real_left_hand_f3_link</parent>
+        <axis>
+          <xyz>-0.99863 -0.052336 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>6.29852e+18</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013'>
+        <pose frame=''>-0.017059 -0.425928 1.975 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013_collision'>
+          <pose frame=''>-1e-06 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013_visual'>
+          <pose frame=''>-1e-06 0 0 -3e-06 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Index_Finger_Proximal' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>1.74429e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014'>
+        <pose frame=''>-0.017059 -0.425928 2.02304 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014_collision'>
+          <pose frame=''>-0 -0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014_visual'>
+          <pose frame=''>-0 -0 0 -2e-06 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Index_Finger_Distal' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.9141e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.015'>
+        <pose frame=''>-0.017059 -0.425928 2.04904 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.015_collision'>
+          <pose frame=''>-0 0 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.015.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.015_visual'>
+          <pose frame=''>-0 0 -0 -3e-06 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.015.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j14' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.015</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>3.04517e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016'>
+        <pose frame=''>-0.018368 -0.400963 1.975 -1.93916 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016_collision'>
+          <pose frame=''>-0 -1e-06 0.01321 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016_visual'>
+          <pose frame=''>-0 -1e-06 0.01321 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_middle_spread_dummy' type='prismatic'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016</child>
+        <parent>hollie_real_left_hand_f1_link</parent>
+        <axis>
+          <xyz>0 -0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017'>
+        <pose frame=''>-0.018368 -0.400963 1.975 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017_collision'>
+          <pose frame=''>-0 0 -1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017_visual'>
+          <pose frame=''>-0 0 -1e-06 1e-06 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Middle_Finger_Proximal' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>1.74429e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018'>
+        <pose frame=''>-0.018368 -0.400963 2.02504 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018_collision'>
+          <pose frame=''>-1e-06 1e-06 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018_visual'>
+          <pose frame=''>-1e-06 1e-06 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Middle_Finger_Distal' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.9141e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.019'>
+        <pose frame=''>-0.018368 -0.400963 2.05704 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.019_collision'>
+          <pose frame=''>-0 -0 -1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.019.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.019_visual'>
+          <pose frame=''>-0 -0 -1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.019.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j15' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.019</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.9141e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020'>
+        <pose frame=''>-0.013339 -0.382274 1.9025 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020_collision'>
+          <pose frame=''>0.0007 0 -0.010019 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020_visual'>
+          <pose frame=''>0.0007 0 -0.010019 3.14159 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j5' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.15796e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_f5_link'>
+        <pose frame=''>-0.019331 -0.382588 1.9025 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f5' type='prismatic'>
+        <child>hollie_real_left_hand_f5_link</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_f6_link'>
+        <pose frame=''>-0.019331 -0.382588 1.9025 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f6' type='prismatic'>
+        <child>hollie_real_left_hand_f6_link</child>
+        <parent>hollie_real_left_hand_f5_link</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_f7_link'>
+        <pose frame=''>-0.019331 -0.382588 1.9025 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f7' type='prismatic'>
+        <child>hollie_real_left_hand_f7_link</child>
+        <parent>hollie_real_left_hand_f6_link</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021'>
+        <pose frame=''>-0.020658 -0.357268 1.9585 1.20243 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021_collision'>
+          <pose frame=''>-1e-06 -2e-06 -0.01321 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021_visual'>
+          <pose frame=''>-1e-06 -2e-06 -0.01321 0.387539 -1e-06 -2e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Finger_Spread' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021</child>
+        <parent>hollie_real_left_hand_f7_link</parent>
+        <axis>
+          <xyz>0.99863 0.052336 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>1.27334e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022'>
+        <pose frame=''>-0.020658 -0.357268 1.9585 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022_collision'>
+          <pose frame=''>1e-06 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022_visual'>
+          <pose frame=''>1e-06 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Pinky' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.14462e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023'>
+        <pose frame=''>-0.020658 -0.357268 2.00304 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023_collision'>
+          <pose frame=''>-1e-06 1e-06 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023_visual'>
+          <pose frame=''>-1e-06 1e-06 0 0 0 -1e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j13' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.9141e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.024'>
+        <pose frame=''>-0.020658 -0.357268 2.02504 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.024_collision'>
+          <pose frame=''>-1e-06 -1e-06 1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.024.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.024_visual'>
+          <pose frame=''>-1e-06 -1e-06 1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.024.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j17' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.024</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>3.05194e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='hollie_real_left_hand_f8_link'>
+        <pose frame=''>-0.019331 -0.382588 1.9025 0 0 -1.51844</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_f8' type='prismatic'>
+        <child>hollie_real_left_hand_f8_link</child>
+        <parent>hollie_real_left_hand_f6_link</parent>
+        <axis>
+          <xyz>0.052336 -0.99863 -0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025'>
+        <pose frame=''>-0.019533 -0.378738 1.968 1.20243 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025_collision'>
+          <pose frame=''>-0 -1e-06 -0.01321 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025_visual'>
+          <pose frame=''>-0 -1e-06 -0.01321 0.191341 -1e-06 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_ring_spread' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025</child>
+        <parent>hollie_real_left_hand_f8_link</parent>
+        <axis>
+          <xyz>0.99863 0.052336 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>6.29852e+18</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026'>
+        <pose frame=''>-0.019533 -0.378738 1.968 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026_collision'>
+          <pose frame=''>-1e-06 0 -1e-06 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026_visual'>
+          <pose frame=''>-1e-06 0 -1e-06 -0.052607 -0 -1e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_Ring_Finger' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.14462e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027'>
+        <pose frame=''>-0.019533 -0.378738 2.01804 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027_collision'>
+          <pose frame=''>-0 0 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027_visual'>
+          <pose frame=''>-0 0 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j12' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>2.9141e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real_lef'>
+        <pose frame=''>-0.019533 -0.378738 2.05004 2.77323 -1.57079 1.99152</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>1e-05</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real_lef_collision'>
+          <pose frame=''>1e-06 -0 -0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/collisions/COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real_lef.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real_lef_visual'>
+          <pose frame=''>1e-06 -0 -0 0.020018 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://arm_robot/meshes/VIS_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real_lef.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <joint name='hollie_real_left_hand_j16' type='revolute'>
+        <child>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real_lef</child>
+        <parent>COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027</parent>
+        <axis>
+          <xyz>-0.052336 0.99863 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>3.04736e+19</upper>
+            <effort>1000</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>1</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <static>0</static>
+      <plugin name='generic_controller' filename='libgeneric_controller_plugin.so'>
+        <controller joint_name='hollie_real_base_x_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_arm_0_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_arm_1_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_arm_2_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_arm_3_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_arm_4_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_arm_5_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_arm_6_joint'>
+          <type>position</type>
+          <pid>500.0 10.0 50.0</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_base_joint'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f4'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Thumb_Opposition'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Thumb_Helper'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Thumb_Flexion'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j3'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j4'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f1'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f2'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f3'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_index_spread'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Index_Finger_Proximal'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Index_Finger_Distal'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j14'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_middle_spread_dummy'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Middle_Finger_Proximal'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Middle_Finger_Distal'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j15'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j5'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f5'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f6'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f7'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Finger_Spread'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Pinky'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j13'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j17'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_f8'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_ring_spread'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_Ring_Finger'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j12'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+        <controller joint_name='hollie_real_left_hand_j16'>
+          <type>position</type>
+          <pid>100.0 0.1 0.1</pid>
+        </controller>
+      </plugin>
+    </model>
+    <state world_name='default'>
+      <sim_time>225 442000000</sim_time>
+      <real_time>103 965831513</real_time>
+      <wall_time>1496305249 602963944</wall_time>
+      <iterations>84823</iterations>
+      <model name='HoLLiE'>
+        <pose frame=''>1.02949 -1.03158 0.019497 -0.00061 0.000627 -0.074831</pose>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000'>
+          <pose frame=''>1.00031 -1.42986 1.12974 0.00064 0.000479 1.55394</pose>
+          <velocity>0.023485 -0.008507 -0.005086 0.025145 0.011733 -0.970873</velocity>
+          <acceleration>33.5594 -17.3209 5.78803 -1.94792 -0.681554 -1.02122</acceleration>
+          <wrench>9.85439 -5.0861 1.6996 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.001'>
+          <pose frame=''>1.00031 -1.42986 1.12973 1.57144 0.000902 1.55394</pose>
+          <velocity>0.022286 -0.009307 -0.006507 -0.02646 0.009496 -0.970837</velocity>
+          <acceleration>33.0306 -20.3786 0.421727 -1.56272 -1.29012 -0.956249</acceleration>
+          <wrench>55.5941 -34.2994 0.709813 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.002'>
+          <pose frame=''>1.00054 -1.42955 1.47973 1.57016 -0.001506 -1.58766</pose>
+          <velocity>0.020263 0.002616 -0.006753 0.184225 0.00073 -0.970971</velocity>
+          <acceleration>36.6018 -7.06801 -0.462109 1.23104 -0.537593 -1.22883</acceleration>
+          <wrench>76.8637 -14.8428 -0.970429 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.003'>
+          <pose frame=''>1.00057 -1.42956 1.47973 0.001131 0.001178 1.92502</pose>
+          <velocity>0.017695 0.00382 -0.006895 0.164975 -0.042385 1.61208</velocity>
+          <acceleration>31.6579 -4.6987 -0.996876 -2.39274 -1.46748 1.99765</acceleration>
+          <wrench>53.2838 -7.90842 -1.67785 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.004'>
+          <pose frame=''>0.995829 -1.43094 1.78474 1.56967 -0.001434 -1.21658</pose>
+          <velocity>-0.019965 0.034137 -0.007519 0.101995 -0.065275 1.61216</velocity>
+          <acceleration>-36.8889 44.7864 -2.43342 -2.09874 0.022725 -0.929993</acceleration>
+          <wrench>-29.7693 36.1426 -1.96377 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.005'>
+          <pose frame=''>0.995765 -1.43098 1.78473 -0.001225 -0.001352 -1.15078</pose>
+          <velocity>-0.040933 0.02112 -0.007616 0.11443 -0.027044 -2.4454</velocity>
+          <acceleration>-78.1676 19.1982 -2.86201 -2.85751 0.463468 2.59214</acceleration>
+          <wrench>-64.0193 15.7234 -2.34399 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.006'>
+          <pose frame=''>0.99582 -1.4308 1.88474 -0.001234 -0.001352 -1.15078</pose>
+          <velocity>-0.048169 0.010233 -0.008058 0.109554 -0.014198 -2.44541</velocity>
+          <acceleration>-92.6486 -0.502759 -2.51906 -1.6529 -0.970513 -0.563494</acceleration>
+          <wrench>-0.000926 -5e-06 -2.5e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.007'>
+          <pose frame=''>0.983839 -1.43616 1.88474 -0.001244 -0.001352 -1.15078</pose>
+          <velocity>-0.014786 -0.03523 -0.007719 0.104523 -0.000969 -2.44544</velocity>
+          <acceleration>-28.5773 -89.7108 -5.19169 -0.788616 0.632203 2.51999</acceleration>
+          <wrench>-0.000286 -0.000897 -5.2e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.008'>
+          <pose frame=''>1.01493 -1.44099 1.88468 0.009124 0.262918 0.460131</pose>
+          <velocity>0.016362 0.091842 -0.004282 -0.523507 -0.252452 1.32266</velocity>
+          <acceleration>18.892 157.287 -1.8902 1.19362 -0.068003 -0.372759</acceleration>
+          <wrench>0.000189 0.001573 -1.9e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.009'>
+          <pose frame=''>1.0258 -1.43606 1.92901 -1.88183 -0.556282 -0.942519</pose>
+          <velocity>-0.002779 0.129402 -0.013118 0.599663 0.30652 0.985027</velocity>
+          <acceleration>-17.0606 229.227 -14.345 1.00052 0.567885 -3.1332</acceleration>
+          <wrench>-0.000171 0.002292 -0.000143 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.010'>
+          <pose frame=''>1.05 -1.46938 1.9546 -1.88141 -0.554186 -0.943312</pose>
+          <velocity>0.036649 0.138504 -0.04337 0.835154 0.423218 0.914294</velocity>
+          <acceleration>-22.4024 223.798 -14.019 -1.64077 0.441022 2.61383</acceleration>
+          <wrench>-0.000224 0.002238 -0.00014 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.011'>
+          <pose frame=''>1.06498 -1.49002 1.97037 -1.88129 -0.553578 -0.943542</pose>
+          <velocity>0.060898 0.13965 -0.068947 0.969957 0.488939 0.873925</velocity>
+          <acceleration>-27.0789 223.043 -11.9822 -2.57617 -0.918965 -0.404828</acceleration>
+          <wrench>-0.000271 0.00223 -0.00012 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.012'>
+          <pose frame=''>0.994117 -1.45879 1.99475 -1.24507 -1.56687 1.66508</pose>
+          <velocity>0.102132 -0.003441 -0.008449 -0.09715 -0.069006 -2.4525</velocity>
+          <acceleration>194.433 -32.1787 -12.1113 -0.179679 -0.677638 -2.56739</acceleration>
+          <wrench>0.001944 -0.000322 -0.000121 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.013'>
+          <pose frame=''>0.994117 -1.45879 1.99475 -2.77059 -1.56681 1.61981</pose>
+          <velocity>0.102594 -0.003276 -0.007897 -0.120632 -0.016038 -2.45351</velocity>
+          <acceleration>195.302 -31.9397 -11.3779 -0.61652 0.299506 -1.33812</acceleration>
+          <wrench>0.001953 -0.000319 -0.000114 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.014'>
+          <pose frame=''>0.994108 -1.4586 2.04279 -2.74649 -1.56677 1.59571</pose>
+          <velocity>0.101173 0.00254 -0.007881 -0.122193 -0.012493 -2.45357</velocity>
+          <acceleration>195.713 -32.0218 -11.423 1.42266 -1.45355 -1.42319</acceleration>
+          <wrench>0.001957 -0.00032 -0.000114 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.015'>
+          <pose frame=''>0.994106 -1.4585 2.06879 -2.73549 -1.56675 1.58471</pose>
+          <velocity>0.100116 0.005654 -0.007904 -0.123835 -0.008775 -2.45299</velocity>
+          <acceleration>195.105 -32.1969 -11.4207 -1.81057 -1.43966 2.9037</acceleration>
+          <wrench>0.001951 -0.000322 -0.000114 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.016'>
+          <pose frame=''>0.983917 -1.43597 1.99473 -0.826621 -1.56895 1.24664</pose>
+          <velocity>0.006782 -0.044241 -0.006244 0.100252 0.012784 -2.43683</velocity>
+          <acceleration>11.3741 -109.288 -7.19801 1.40368 0.401093 -2.2669</acceleration>
+          <wrench>0.000114 -0.001093 -7.2e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.017'>
+          <pose frame=''>0.983917 -1.43597 1.99473 -2.34314 -1.56885 1.19237</pose>
+          <velocity>0.00718 -0.044293 -0.006167 0.080182 0.05829 -2.4359</velocity>
+          <acceleration>12.116 -109.45 -7.18526 -2.33582 -0.750604 2.77523</acceleration>
+          <wrench>0.000121 -0.001095 -7.2e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.018'>
+          <pose frame=''>0.983954 -1.43588 2.04477 -2.30817 -1.56878 1.1574</pose>
+          <velocity>0.009763 -0.048176 -0.006158 0.081122 0.0562 -2.43583</velocity>
+          <acceleration>15.7519 -117.116 -7.18199 2.60805 -0.122797 -0.23236</acceleration>
+          <wrench>0.000158 -0.001171 -7.2e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.019'>
+          <pose frame=''>0.983979 -1.43582 2.07677 -2.28877 -1.56873 1.138</pose>
+          <velocity>0.010993 -0.050659 -0.006175 0.081063 0.056137 -2.43657</velocity>
+          <acceleration>17.284 -121.967 -7.12435 2.44635 -0.084158 -1.71953</acceleration>
+          <wrench>0.000173 -0.00122 -7.1e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.020'>
+          <pose frame=''>0.9813 -1.41659 1.92221 -0.001364 -0.001235 -1.06017</pose>
+          <velocity>-0.05663 -0.058922 -0.005361 0.099785 -0.003516 -0.459889</velocity>
+          <acceleration>-114.147 -133.871 -2.28366 -2.55883 -0.770936 -2.67177</acceleration>
+          <wrench>-0.001141 -0.001339 -2.3e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.021'>
+          <pose frame=''>0.963725 -1.3973 1.97818 3.02135 -1.56941 0.630872</pose>
+          <velocity>-0.01643 -0.051695 -0.002615 -0.037822 -0.061136 -0.459701</velocity>
+          <acceleration>-52.4256 -136.738 -1.81964 3.03372 0.368215 0.664658</acceleration>
+          <wrench>-0.000524 -0.001367 -1.8e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.022'>
+          <pose frame=''>0.963726 -1.3973 1.97817 -1.67626 -1.56922 0.616098</pose>
+          <velocity>-0.015622 -0.051549 -0.003391 -0.067957 -0.007396 -0.459706</velocity>
+          <acceleration>-50.8634 -136.531 -2.90662 1.64142 0.944594 0.661168</acceleration>
+          <wrench>-0.000509 -0.001365 -2.9e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.023'>
+          <pose frame=''>0.963783 -1.39726 2.02271 -1.66977 -1.56912 0.609605</pose>
+          <velocity>-0.015843 -0.048534 -0.003498 -0.071958 -0.000259 -0.459707</velocity>
+          <acceleration>-50.6397 -136.31 -2.84808 0.663361 -0.237918 -2.48063</acceleration>
+          <wrench>-0.000506 -0.001363 -2.8e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.024'>
+          <pose frame=''>0.963813 -1.39724 2.04471 -1.66682 -1.56907 0.606656</pose>
+          <velocity>-0.016443 -0.047074 -0.003624 -0.074604 0.004461 -0.459709</velocity>
+          <acceleration>-51.8683 -136.412 -2.85595 0.525909 -0.48691 -2.48309</acceleration>
+          <wrench>-0.000519 -0.001364 -2.9e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.025'>
+          <pose frame=''>0.974232 -1.41604 1.9877 3.01299 -1.56941 0.639226</pose>
+          <velocity>-0.034493 -0.059253 -0.005038 -0.036665 -0.062423 -0.459721</velocity>
+          <acceleration>-72.6834 -142.114 -5.10848 1.29966 -1.0476 -2.51774</acceleration>
+          <wrench>-0.000727 -0.001421 -5.1e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.026'>
+          <pose frame=''>0.974234 -1.41604 1.9877 -1.68123 -1.56919 0.621063</pose>
+          <velocity>-0.031603 -0.058908 -0.005265 -0.068043 -0.006466 -0.459743</velocity>
+          <acceleration>-67.1374 -141.746 -5.8173 1.64394 0.987182 0.586735</acceleration>
+          <wrench>-0.000671 -0.001417 -5.8e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.027'>
+          <pose frame=''>0.974301 -1.416 2.03774 -1.67377 -1.56907 0.613605</pose>
+          <velocity>-0.029517 -0.055244 -0.005185 -0.072757 0.001944 -0.459759</velocity>
+          <acceleration>-62.4915 -141.206 -5.93175 0.775436 -0.08645 -2.5841</acceleration>
+          <wrench>-0.000625 -0.001412 -5.9e-05 0 -0 0</wrench>
+        </link>
+        <link name='COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real_lef'>
+          <pose frame=''>0.974348 -1.41597 2.06974 -1.67071 -1.56902 0.610544</pose>
+          <velocity>-0.027606 -0.052711 -0.005116 -0.075943 0.007626 -0.459772</velocity>
+          <acceleration>-59.0579 -140.888 -6.02848 0.604265 -0.396254 -2.61013</acceleration>
+          <wrench>-0.000591 -0.001409 -6e-05 0 -0 0</wrench>
+        </link>
+        <link name='base_link'>
+          <pose frame=''>1.02949 -1.03158 0.019497 -0.00061 0.000627 -0.074831</pose>
+          <velocity>0.001129 -0.000468 -0.006041 -0.007113 0.030907 -0.001401</velocity>
+          <acceleration>1.24025 0.028639 -1.15131 -1.11418 -1.12654 -1.39987</acceleration>
+          <wrench>1240.25 28.6386 -1151.31 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_arm_0_joint_link'>
+          <pose frame=''>1.00024 -1.42991 1.01975 0.000639 0.000491 1.54832</pose>
+          <velocity>0.023079 -0.005767 -0.00403 0.013857 0.014174 -0.008388</velocity>
+          <acceleration>30.6537 -7.91399 9.77488 -0.008055 0.534899 0.205619</acceleration>
+          <wrench>9.00114 -2.32386 2.8703 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_Thumb_Helper_link'>
+          <pose frame=''>1.02582 -1.43606 1.92905 -3.10771 -1.30773 0.425041</pose>
+          <velocity>-0.00045 0.12927 -0.004066 -0.524535 -0.250551 1.3227</velocity>
+          <acceleration>-14.0632 229.19 -1.53878 2.52996 0.268146 2.84375</acceleration>
+          <wrench>-0.000141 0.002292 -1.5e-05 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_f1_link'>
+          <pose frame=''>0.983854 -1.43616 1.88473 -0.001256 -0.001353 -1.15078</pose>
+          <velocity>0.009511 -0.032719 -0.00572 0.098427 0.017237 -2.44564</velocity>
+          <acceleration>17.8197 -88.0839 -7.09069 1.43286 1.46062 2.0823</acceleration>
+          <wrench>0.000178 -0.000881 -7.1e-05 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_f2_link'>
+          <pose frame=''>0.983855 -1.43616 1.88472 -0.001257 -0.001353 -1.15078</pose>
+          <velocity>0.011171 -0.032366 -0.005492 0.098085 0.01803 -2.44876</velocity>
+          <acceleration>20.945 -87.703 -7.06614 0.848623 0.1204 2.11966</acceleration>
+          <wrench>0.000209 -0.000877 -7.1e-05 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_f3_link'>
+          <pose frame=''>0.983856 -1.43616 1.88472 -0.001257 -0.001353 -1.15079</pose>
+          <velocity>0.012507 -0.032059 -0.005325 0.097975 0.018082 -2.45116</velocity>
+          <acceleration>23.4453 -87.3432 -7.05707 0.663169 0.044182 -2.70037</acceleration>
+          <wrench>0.000234 -0.000873 -7.1e-05 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_f5_link'>
+          <pose frame=''>0.976069 -1.41952 1.92221 -0.001367 -0.001234 -1.06017</pose>
+          <velocity>-0.050747 -0.055625 -0.005213 0.097659 0.001442 -0.459896</velocity>
+          <acceleration>-100.504 -132.364 -3.50149 -3.01738 -0.369165 0.459503</acceleration>
+          <wrench>-0.001005 -0.001324 -3.5e-05 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_f6_link'>
+          <pose frame=''>0.976074 -1.41952 1.92221 -0.001371 -0.001234 -1.06017</pose>
+          <velocity>-0.043557 -0.054671 -0.004771 0.095654 0.006038 -0.459903</velocity>
+          <acceleration>-86.6366 -131.25 -4.01345 -0.156486 1.08345 0.447313</acceleration>
+          <wrench>-0.000866 -0.001313 -4e-05 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_f7_link'>
+          <pose frame=''>0.976082 -1.41952 1.9222 -0.001375 -0.001234 -1.06017</pose>
+          <velocity>-0.028815 -0.052447 -0.003768 0.092485 0.012729 -0.459914</velocity>
+          <acceleration>-58.1805 -128.413 -4.60085 0.713908 -0.159616 0.428139</acceleration>
+          <wrench>-0.000582 -0.001284 -4.6e-05 0 -0 0</wrench>
+        </link>
+        <link name='hollie_real_left_hand_f8_link'>
+          <pose frame=''>0.976076 -1.41952 1.9222 -0.001373 -0.001234 -1.06017</pose>
+          <velocity>-0.039985 -0.054299 -0.004587 0.094537 0.008643 -0.459916</velocity>
+          <acceleration>-79.7686 -130.905 -4.38542 -2.06416 -0.812621 0.421873</acceleration>
+          <wrench>-0.000798 -0.001309 -4.4e-05 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <link name='link'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_sphere_1'>
+        <pose frame=''>1.47351 -2.09853 1.11066 0 -0 0</pose>
+        <link name='link'>
+          <pose frame=''>1.47351 -2.09853 1.11066 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>2.61142 -2.51134 3.10305 0 0.847644 2.52419</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <model name='unit_sphere_1'>
+      <static>0</static>
+      <pose frame=''>1 -3 0.5 0 -0 0</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.1</iyy>
+            <iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <sphere>
+              <radius>0</radius>
+            </sphere>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <transparency>0.7</transparency>
+          <geometry>
+            <sphere>
+              <radius>0.1</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>0</gravity>
+      </link>
+    </model>
+  </world>
+</sdf>
