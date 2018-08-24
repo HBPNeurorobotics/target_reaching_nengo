@@ -2,9 +2,9 @@ import nengo
 import rospy
 import numpy as np
 from std_msgs.msg import Float64
-import rhythmic
+# import rhythmic
 import voluntary
-import reflex
+# import reflex
 import feedback
 from std_msgs.msg import String
 
