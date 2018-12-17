@@ -23,9 +23,9 @@ class service(object):
         self.model_state.pose.orientation.y = 0.0
         self.model_state.pose.orientation.z = 0.0
         self.model_state.pose.orientation.w = 1.0
-        #self.model_state.scale.x = 1.0
-        #self.model_state.scale.y = 1.0
-        #self.model_state.scale.z = 1.0
+        self.model_state.scale.x = 1.0
+        self.model_state.scale.y = 1.0
+        self.model_state.scale.z = 1.0
         self.model_state.twist.linear.z = 0.0
         self.model_state.twist.angular.x = 0.0
         self.model_state.twist.angular.y = 0.0
