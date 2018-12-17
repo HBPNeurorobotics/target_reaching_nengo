@@ -3,9 +3,21 @@
 target reaching code with primitives, arm_robot and Nengo
 
 
-## code main repository
-the full code repo for snn nengo is here --> auf branch pub_sub:
-https://ids-git.fzi.de/steffen/snn_nengo_motion/tree/pub_sub/src/nengo_ros/src_lea/motion_modules 
+## include the scirpts in pithon
+* [ ] FIX THIS HACK
+change the local paths in:
+* main_TR_CL.py
+* error.py
+
+
+## to start the main target reaching
+* start the nengo gui
+```
+cd target_reaching_nengo/src
+nengo
+```
+* in the gui select "main_TR_CL.py" then wait until it loads
+* start
 
 
 
@@ -23,4 +35,9 @@ to get a ros publisher running from the nengo_gui, we added a line in the nengo_
     s.start(port=args.port, password=args.password, browser=args.browser)
 ```
 
-https://github.com/nengo/nengo_gui/issues/827  
+https://github.com/nengo/nengo_gui/issues/827
+
+
+## code main repository
+the full code repo for snn nengo is here --> auf branch pub_sub:
+https://ids-git.fzi.de/steffen/snn_nengo_motion/tree/pub_sub/src/nengo_ros/src_lea/motion_modules
