@@ -3,7 +3,7 @@
 target reaching code with primitives, arm_robot and Nengo
 
 
-## include the scirpts in pithon
+## include the scirpts in python
 * [ ] FIX THIS HACK
 change the local paths in:
 * main_TR_CL.py
