@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #import time
 #import timeit
 from operator import add, mul, sub

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import nengo
 import numpy as np
 

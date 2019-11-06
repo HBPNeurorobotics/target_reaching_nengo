@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import nengo
 import numpy as np
 import voluntary
@@ -7,10 +9,7 @@ import feedback
 import rospy
 from gazebo_msgs.msg import LinkStates
 import sys
-
-# TODO: [camilo 2018.12.] ugly hack, this is horrible, change this
-sys.path.append('/home/milo/workspace/catkin_ws/src/target_reaching_nengo/scripts')
-# sys.path.append('/home/steffen/Schreibtisch/ve_nengo/snn_nengo_motion/src/nengo_ros/src_lea/scripts')
+import rospkg
 import generateCSV_data
 
 # Variable fuer NRP

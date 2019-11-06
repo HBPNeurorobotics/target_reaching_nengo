@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import math
 import operator
 from random import uniform

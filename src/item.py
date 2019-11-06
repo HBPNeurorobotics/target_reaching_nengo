@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import nengo
 
 class Item(object):
