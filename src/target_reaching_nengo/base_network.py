@@ -3,10 +3,6 @@
 import nengo
 import numpy as np
 
-#from target_reaching_nengo import Feedback
-#from target_reaching_nengo import Voluntary
-#import feedback
-#import voluntary
 import rospy
 from std_msgs.msg import Float64, String
 
@@ -116,5 +112,3 @@ class Base_network():
                 nengo.Connection(net.f_u, net.ros_out)#, synapse=0.1)
                 # N = 250, radius=np.sqrt(3), synapse = 0.1
         return net
-
-model = nengo.Network()

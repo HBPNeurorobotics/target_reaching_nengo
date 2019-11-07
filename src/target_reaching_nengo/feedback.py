@@ -237,4 +237,3 @@ class Feedback(object):
             #alt
             nengo.Connection(net.ens_calc, net.output, function=get_index)
         return net
-model = nengo.Network()

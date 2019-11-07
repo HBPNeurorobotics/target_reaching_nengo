@@ -7,10 +7,7 @@ from operator import add, mul, sub
 import nengo
 import numpy as np
 
-#from target_reaching_nengo import Base_network
 from target_reaching_nengo import Motion
-#import base_network
-#import motion
 
 import rospy
 from std_msgs.msg import String
@@ -216,4 +213,3 @@ print numbers[3:6]
             nengo.Connection(net.u_elbow, net.output[1], function=self.map_voluntary_2)
         return net
         '''
-model = nengo.Network()

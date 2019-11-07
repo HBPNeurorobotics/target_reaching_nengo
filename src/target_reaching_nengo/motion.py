@@ -44,5 +44,3 @@ class Motion(object):
 
     def map_voluntary_2(self, u):
         return u * (self._end[1] - self._start[1])   + self._start[1]
-
-model = nengo.Network()

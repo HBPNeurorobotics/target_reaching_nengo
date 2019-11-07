@@ -11,16 +11,12 @@ from random import uniform
 import nengo
 import numpy as np
 
-#sys.path.append(os.path.join(sys.path[0],'scripts'))
-
 from target_reaching_nengo import Item
-#import item
 
-import rospy
 from gazebo_msgs.msg import LinkStates
 from std_msgs.msg import Float64
-import rospkg
 
+import rospkg
 scripts_path = rospkg.RosPack().get_path('target_reaching_nengo')+'/scripts/'
 sys.path.append(scripts_path)
 import generateCSV_data
@@ -345,5 +341,3 @@ class Error(object):
             target_pos_polar = self.calc_polar(target_pos_vector.x, target_pos_vector.y, target_pos_vector.z)
             return self.tcp.polar_pos[0] - target_pos_polar[0]
 
-
-model = nengo.Network()
