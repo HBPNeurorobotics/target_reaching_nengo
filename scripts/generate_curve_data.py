@@ -4,13 +4,12 @@ import numpy as np
 import nengo
 
 class Generate_curve(object):
-    
     def __init__(self, n_points, amplitude, period, phase_shift, vertical_shift, do_print):
         self.n_points       = n_points
         self.amplitude      = amplitude
         self.period         = period
         self.phase_shift    = phase_shift
-        self.vertical_shift = vertical_shift 
+        self.vertical_shift = vertical_shift
         self.data           = self.generate_sin()
         if do_print:
             self.print_data()
@@ -22,7 +21,6 @@ class Generate_curve(object):
         sin_u = np.round(sin_u, 2)
         data = np.array([u, sin_u])
         return data
-    
 
     def print_data(self):
         print
@@ -33,6 +31,5 @@ class Generate_curve(object):
         values_arrstr = np.char.mod('%f', self.data[1])
         values = ", ".join(values_arrstr)
         print 'Values: ', values
-    
-    
+
 model = nengo.Network()

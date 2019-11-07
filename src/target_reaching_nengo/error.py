@@ -13,7 +13,9 @@ import numpy as np
 
 #sys.path.append(os.path.join(sys.path[0],'scripts'))
 
-import item
+from target_reaching_nengo import Item
+#import item
+
 import rospy
 from gazebo_msgs.msg import LinkStates
 from std_msgs.msg import Float64
@@ -29,12 +31,12 @@ class Error(object):
 
     def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'HoLLiE'):
         self.robot          = robot
-        self.subject        = item.Item('subject', subject_name + '::link')
-        self.cmd            = item.Item('cmd', 'cmd_TR')
+        self.subject        = Item('subject', subject_name + '::link')
+        self.cmd            = Item('cmd', 'cmd_TR')
         #state               = LinkStates()
         #self.cmd.position        = state.position
-        self.tcp            = item.Item('tcp', robot + '::hollie_real_left_hand_f1_link')
-        self.shoulder       = item.Item('shoulder', robot + '::hollie_real_left_arm_0_joint_link')
+        self.tcp            = Item('tcp', robot + '::hollie_real_left_hand_f1_link')
+        self.shoulder       = Item('shoulder', robot + '::hollie_real_left_arm_0_joint_link')
         self.threshold      = threshold
 
         self.learning       = learning

@@ -3,13 +3,12 @@
 import nengo
 import numpy as np
 
-# import reflex
-import feedback
+#from target_reaching_nengo import Feedback
+#from target_reaching_nengo import Voluntary
+#import feedback
+#import voluntary
 import rospy
-# import rhythmic
-import voluntary
 from std_msgs.msg import Float64, String
-
 
 class Base_network():
     def __init__(self, voluntary_joints = [],  rhythmic_joints = [], stim = None, use_stim = True):

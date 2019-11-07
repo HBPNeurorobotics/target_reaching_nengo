@@ -2,37 +2,43 @@
 
 import nengo
 import numpy as np
-import voluntary
-import base_network
-import error
-import feedback
+
+from target_reaching_nengo import Voluntary
+from target_reaching_nengo import Base_network
+from target_reaching_nengo import Error
+from target_reaching_nengo import Feedback
+#import voluntary
+#import base_network
+#import error
+#import feedback
+
 import rospy
 from gazebo_msgs.msg import LinkStates
 import sys
-import rospkg
+#import rospkg
 import generateCSV_data
 
 # Variable fuer NRP
 #robot = 'robot'
 robot = 'HoLLiE'
 voluntary_joints = [['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos'], ['/' + robot + '/hollie_real_left_arm_1_joint/cmd_pos'], ['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos' , '/' + robot + '/hollie_real_left_arm_3_joint/cmd_pos']]
-base_network     = base_network.Base_network(voluntary_joints = voluntary_joints, use_stim = False)
+base_network     = Base_network(voluntary_joints = voluntary_joints, use_stim = False)
 neuron_number = 21
 
 # motion primitives
-hoch_runter     = voluntary.Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
-links_rechts    = voluntary.Voluntary(slider = 1, joints = voluntary_joints[1], start = [-1.7], end = [1.5], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
+hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
+links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-1.7], end = [1.5], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
 
 #ORGINAL
-#fern_nah        = voluntary.Voluntary(slider = 2, joints = voluntary_joints[2], start = [0.47, -2.36], end = [1.25, -1.05],  label= 'fern_nah', joint_mapping = [0.9, 2.0], neuron_number = neuron_number)
-fern_nah          = voluntary.Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
-#fern_nah          = voluntary.Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+#fern_nah        = Voluntary(slider = 2, joints = voluntary_joints[2], start = [0.47, -2.36], end = [1.25, -1.05],  label= 'fern_nah', joint_mapping = [0.9, 2.0], neuron_number = neuron_number)
+fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+#fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
-#error_1 = error.Error(subject_name = 'unit_sphere_1', threshold = [ [-0.03, 0.03],  [-0.05, 0.05], [-0.05, 0.05]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])
+#error_1 = Error(subject_name = 'unit_sphere_1', threshold = [ [-0.03, 0.03],  [-0.05, 0.05], [-0.05, 0.05]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])
 err = 0.05
-error_1 = error.Error(subject_name = 'unit_sphere_1', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])
+error_1 = Error(subject_name = 'unit_sphere_1', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])
 
-feedback = feedback.Feedback(neuron_number = neuron_number)
+feedback = Feedback(neuron_number = neuron_number)
 sub = rospy.Subscriber('/gazebo/link_states', LinkStates, error_1.callback, queue_size=1)
 csv_x = generateCSV_data.GenerateCSV_data(file_name ='x')
 csv_y = generateCSV_data.GenerateCSV_data(file_name ='y')
