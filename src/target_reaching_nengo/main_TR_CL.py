@@ -16,7 +16,11 @@ class Main_TR_CL:
         # Variable fuer NRP
         #robot = 'robot'
         robot = 'HoLLiE'
-        voluntary_joints = [['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos'], ['/' + robot + '/hollie_real_left_arm_1_joint/cmd_pos'], ['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos' , '/' + robot + '/hollie_real_left_arm_3_joint/cmd_pos']]
+        #robot = 'hbp'
+        voluntary_joints = [['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos'],
+                            ['/' + robot + '/hollie_real_left_arm_1_joint/cmd_pos'],
+                            ['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos' ,
+                             '/' + robot + '/hollie_real_left_arm_3_joint/cmd_pos']]
         base_network     = Base_network(voluntary_joints = voluntary_joints, use_stim = False)
         neuron_number = 21
 

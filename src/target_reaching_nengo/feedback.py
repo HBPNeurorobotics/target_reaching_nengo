@@ -17,13 +17,13 @@ class Feedback(object):
         self.sensor_joints = sensor_joints
         self.neuron_number = neuron_number # for visualization of position feedback
         self.arm = JointState()
-        self.arm.position=[0.0 for i in range(7)]
-        self.arm.effort= [0.0 for i in range(7)] # 7 arm joints
-        self.arm.name = ['' for i in range(7)]
+        self.arm.position=[0.0 for i in range(6)]
+        self.arm.effort= [0.0 for i in range(6)] # 7 arm joints
+        self.arm.name = ['' for i in range(6)]
         self.avg = []
         self.threshold_mapping = np.array(
-            [[15,    600,    620,    650,    1000,   200,    1000],    # positiv threshold
-            [-15,   -600,   -610,   -650,   -1000,  -170,   -1000]])   # negativ threshold
+            [[600,    620,    650,    1000,   200,    1000],    # positiv threshold
+            [-600,   -610,   -650,   -1000,  -170,   -1000]])   # negativ threshold
         if len(threshold) is not 0:
             for i in range (len(self.sensor_joints)):
                 self.threshold_mapping[0][sensor_joints[i]]= threshold[0][i]
@@ -95,7 +95,7 @@ class Feedback(object):
 
         def get_feedback_position(x):
             # RASDIAN, DEGREE
-            return [self.arm.position[joint], math.degrees(self.arm.position[joint])]
+            return [self.arm.position[joint-1], math.degrees(self.arm.position[joint-1])]
 
         def get_dif(x):
             dif = abs(x[0] - x[1])
@@ -126,7 +126,7 @@ class Feedback(object):
 
 
         def get_feedback_position(x):
-            res = math.degrees(self.arm.position[joint])
+            res = math.degrees(self.arm.position[joint-1])
             res = min(max_val-1, max(min_val+1, res))
             return res
 
