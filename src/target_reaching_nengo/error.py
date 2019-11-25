@@ -21,7 +21,7 @@ scripts_path = rospkg.RosPack().get_path('target_reaching_nengo')+'/scripts/'
 sys.path.append(scripts_path)
 import generateCSV_data
 import generate_curve_data
-
+import rospy
 
 class Error(object):
 
@@ -35,7 +35,8 @@ class Error(object):
         #self.tcp            = Item('tcp', robot + '::svh_hand_z')
         self.tcp            = Item('tcp', robot + '::hollie_real_left_hand_f1_link')
         #self.shoulder       = Item('shoulder', robot + '::arm_1_link')
-        self.shoulder       = Item('shoulder', robot + '::hollie_real_left_arm_0_joint_link')
+        #self.shoulder       = Item('shoulder', robot + '::hollie_real_left_arm_0_joint_link')
+        self.shoulder       = Item('shoulder', robot + '::COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000')
         self.threshold      = threshold
 
         self.learning       = learning
