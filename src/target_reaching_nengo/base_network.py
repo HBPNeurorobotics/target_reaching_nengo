@@ -79,7 +79,7 @@ class Base_network():
                         duplette.append([x[i], self.all_joints[i]])
                     else:
                         res.append([x[i], self.all_joints[i]])
-                val = duplette[0][0] +  duplette[1][0] / 2
+                val = (duplette[0][0] +  duplette[1][0]) / 2
                 #######  BLEN ERROR #####
                 ##### DEBUG #####
                 #val = duplette[1][0]
