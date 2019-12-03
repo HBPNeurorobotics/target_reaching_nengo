@@ -80,6 +80,7 @@ class Base_network():
         #self.data_pub.publish(to_pub)
 
     def publish_topic(self, t, x):
+        robot = 'hbp'
         should_publish = [False]*len(self._joints_pub[1])
         if self.use_stim:
             for i in range(len(self._joints_pub[1])):
@@ -88,13 +89,13 @@ class Base_network():
         else:  # FOR TR
             for i in range(len(self._joints_pub[1])):
                 # NEAR FAR
-                if self._joints_pub[0][i] == '/HoLLiE/hollie_real_left_arm_3_joint/cmd_pos':
+                if self._joints_pub[0][i] == '/' + robot + '/arm_3_joint/cmd_pos':
                    # self._joints_pub[1][i].publish(-1.1)
                     if abs(self.error[0]) >= 1:
                         self._joints_pub[1][i].publish(x[i])
                         should_publish[i] = True
                 # UP DOWN
-                elif self._joints_pub[0][i] == '/HoLLiE/hollie_real_left_arm_2_joint/cmd_pos':
+                elif self._joints_pub[0][i] == '/' + robot + '/arm_2_joint/cmd_pos':
                     #self._joints_pub[1][i].publish(1.0)
                     if abs(self.error[1]) >= 1:
                         self._joints_pub[1][i].publish(x[i])

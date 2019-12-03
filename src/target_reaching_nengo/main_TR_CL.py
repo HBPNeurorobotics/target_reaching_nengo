@@ -15,22 +15,26 @@ class Main_TR_CL:
 
         # Variable fuer NRP
         #robot = 'robot'
-        robot = 'HoLLiE'
-        #robot = 'hbp'
-        voluntary_joints = [['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos'],
-                            ['/' + robot + '/hollie_real_left_arm_1_joint/cmd_pos'],
-                            ['/' + robot + '/hollie_real_left_arm_2_joint/cmd_pos' ,
-                             '/' + robot + '/hollie_real_left_arm_3_joint/cmd_pos']]
+        #robot = 'HoLLiE'
+        robot = 'hbp'
+        voluntary_joints = [['/' + robot + '/arm_2_joint/cmd_pos'],
+                            ['/' + robot + '/arm_1_joint/cmd_pos'],
+                            ['/' + robot + '/arm_2_joint/cmd_pos' ,
+                             '/' + robot + '/arm_3_joint/cmd_pos']]
         base_network     = Base_network(voluntary_joints = voluntary_joints, use_stim = False)
         neuron_number = 21
 
         # motion primitives
         hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
         links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-1.7], end = [1.5], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
+        fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+        #hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-1.5], end = [0.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
+        #links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [0.4], end = [1.4], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
+        #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-1.5, -2.3], end =[0.0, 2.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
         #ORGINAL
         #fern_nah        = Voluntary(slider = 2, joints = voluntary_joints[2], start = [0.47, -2.36], end = [1.25, -1.05],  label= 'fern_nah', joint_mapping = [0.9, 2.0], neuron_number = neuron_number)
-        fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+        #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
         #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
         #self.error_1 = Error(subject_name = 'unit_sphere_1', threshold = [ [-0.03, 0.03],  [-0.05, 0.05], [-0.05, 0.05]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])

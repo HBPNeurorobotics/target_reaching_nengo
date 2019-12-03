@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="hbp_mapping" pkg="target_reaching_nengo" type="target_reaching_to_hbp_mapping.py" output="screen">
+  </node>
+</launch>

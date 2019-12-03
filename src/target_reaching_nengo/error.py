@@ -25,18 +25,18 @@ import rospy
 
 class Error(object):
 
-    def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'HoLLiE'):
-    #def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'hbp'):
+    #def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'HoLLiE'):
+    def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'hbp'):
         self.robot          = robot
         self.subject        = Item('subject', subject_name + '::link')
         self.cmd            = Item('cmd', 'cmd_TR')
         #state               = LinkStates()
         #self.cmd.position        = state.position
-        #self.tcp            = Item('tcp', robot + '::svh_hand_z')
-        self.tcp            = Item('tcp', robot + '::hollie_real_left_hand_f1_link')
-        #self.shoulder       = Item('shoulder', robot + '::arm_1_link')
+        self.tcp            = Item('tcp', robot + '::svh_hand_z')
+        #self.tcp            = Item('tcp', robot + '::hollie_real_left_hand_f1_link')
+        self.shoulder       = Item('shoulder', robot + '::arm_1_link')
         #self.shoulder       = Item('shoulder', robot + '::hollie_real_left_arm_0_joint_link')
-        self.shoulder       = Item('shoulder', robot + '::COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000')
+        #self.shoulder       = Item('shoulder', robot + '::COL_COL_COL_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_VIS_hollie_real.000')
         self.threshold      = threshold
 
         self.learning       = learning
@@ -72,7 +72,7 @@ class Error(object):
         #print 'POLAR: ', self.tcp.polar_pos
         if self.learning: self.error = self.calc_error_2()
         else: self.error = self.calc_error()
-
+        rospy.loginfo("error: {}".format(self.error))
 
 
     #  um aus main klassen error zu bekommen
