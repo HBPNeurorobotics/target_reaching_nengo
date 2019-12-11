@@ -67,8 +67,11 @@ class Error(object):
         self.subject.vector_to_shoulder = self.check_limit(self.calc_vector(self.subject.position))
         self.tcp.vector_to_shoulder = self.calc_vector(self.tcp.position)
         self.subject.polar_pos  =  self.calc_polar(self.subject.vector_to_shoulder.x, self.subject.vector_to_shoulder.y, self.subject.vector_to_shoulder.z)
+        #rospy.loginfo("subject.polar_pos: {}".format(self.subject.polar_pos))
         self.tcp.polar_pos      =   self.calc_polar(self.tcp.vector_to_shoulder.x, self.tcp.vector_to_shoulder.y, self.tcp.vector_to_shoulder.z)
+        #rospy.loginfo("tcp.polar_pos: {}".format(self.tcp.polar_pos))
         self.dif = self.calc_dif()
+        #rospy.loginfo("dif: {}".format(self.dif))
         #print 'POLAR: ', self.tcp.polar_pos
         if self.learning: self.error = self.calc_error_2()
         else: self.error = self.calc_error()

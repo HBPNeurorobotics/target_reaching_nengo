@@ -169,7 +169,8 @@ class Base_network():
                 #net.f_u_blended = nengo.Ensemble(n_neurons=700, dimensions=len(set(self._joints_pub[0])), radius=12)   #orginal
                 net.f_u_blended = nengo.Ensemble(n_neurons=100, dimensions=len(set(self._joints_pub[0])), radius=2, neuron_type=nengo.Direct(), label= 'g(f(u)) blended')    #direct
                 #net.f_u_blended = nengo.Ensemble(n_neurons=800, dimensions=len(set(self._joints_pub[0])), radius=2)     #ohne direct
-                nengo.Connection(net.f_u, net.f_u_blended, function= blend)
+                #nengo.Connection(net.f_u, net.f_u_blended, function= blend, synapse=0.001)
+                nengo.Connection(net.f_u, net.f_u_blended, synapse=0.001)
                 net.ros_out = nengo.Node(self.publish_topic, size_in=len(self._joints_pub[0]) )
                 nengo.Connection(net.f_u_blended, net.ros_out)#, synapse=0.1)
             else:
