@@ -124,7 +124,7 @@ def main(argv=None):
     rospy.init_node("TargetReachingToHBPMapping")
     hbp_mapping = TargetReachingToHBPMapping()
     rospy.loginfo("TargetReachingToHBPMapping initialized")
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(40)
     while not rospy.is_shutdown():
         #hbp_mapping.arm_manager.arm_client.cancel_all_goals()
         #rospy.loginfo("cancel all")
