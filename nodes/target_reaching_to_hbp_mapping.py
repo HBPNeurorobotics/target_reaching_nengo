@@ -23,7 +23,7 @@ class TargetReachingToHBPMapping:
         self.arm_1_joint_cmd_sub = rospy.Subscriber('/' + robot + '/arm_1_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_1_joint", queue_size=1)
         self.arm_2_joint_cmd_sub = rospy.Subscriber('/' + robot + '/arm_2_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_2_joint", queue_size=1)
         self.arm_3_joint_cmd_sub = rospy.Subscriber('/' + robot + '/arm_3_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_3_joint", queue_size=1)
-        self.data_pub = rospy.Publisher('/data_pub', String, queue_size=1)
+        self.nengo_joint_cmds_pub = rospy.Publisher('/nengo_joint_cmds', String, queue_size=1)
         arm_trajectory_controller_param = "/arm/" + "arm_eff_traj_controller"
         self.arm_traj_client = actionlib.SimpleActionClient(arm_trajectory_controller_param + "/follow_joint_trajectory", FollowJointTrajectoryAction)
         self.pos_diff_tolerance = 0.009
@@ -41,7 +41,7 @@ class TargetReachingToHBPMapping:
         if "arm_3_joint" in self.arm_joint_cmds:
             to_pub += str(self.arm_joint_cmds["arm_3_joint"])
         to_pub += "]"
-        self.data_pub.publish(to_pub)
+        self.nengo_joint_cmds_pub.publish(to_pub)
 
     def joint_states_callback(self, joint_state):
         self.last_joint_state = list(joint_state.position[0:len(self.arm_manager.joint_names)])
