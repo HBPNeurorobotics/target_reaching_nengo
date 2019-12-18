@@ -3,6 +3,7 @@
 class Item(object):
     def __init__(self, name, topic):
         self.position           = None
+        self.orientation        = None
         self.name               = name
         self.topic              = topic
         self.polar_pos          =  [0.0, 0.0, 0.0] # r, theta, phi of position ModelStates of TCP

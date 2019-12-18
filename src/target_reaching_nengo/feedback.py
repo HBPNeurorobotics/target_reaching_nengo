@@ -9,7 +9,7 @@ import numpy as np
 
 import rospy
 from sensor_msgs.msg import JointState
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, String
 
 
 class Feedback(object):
@@ -28,6 +28,7 @@ class Feedback(object):
             for i in range (len(self.sensor_joints)):
                 self.threshold_mapping[0][sensor_joints[i]]= threshold[0][i]
                 self.threshold_mapping[1][sensor_joints[i]]= threshold[1][i]
+        self.feedback_data_pub = rospy.Publisher("/feedback_data_pub" , String, queue_size=1)
 
     def callback(self, data):
         self.arm.position = data.position
@@ -91,30 +92,30 @@ class Feedback(object):
 
 
 
-    def get_network_delta_pos(self, label, joint):
+    #def get_network_delta_pos(self, label, joint):
 
-        def get_feedback_position(x):
-            # RASDIAN, DEGREE
-            return [self.arm.position[joint-1], math.degrees(self.arm.position[joint-1])]
+        #def get_feedback_position(x):
+            ## RADIAN, DEGREE
+            #return [self.arm.position[joint-1], math.degrees(self.arm.position[joint-1])]
 
-        def get_dif(x):
-            dif = abs(x[0] - x[1])
-            if dif >0.05:
-                return 1
-            else:
-                return 0
+        #def get_dif(x):
+            #dif = abs(x[0] - x[1])
+            #if dif >0.05:
+                #return 1
+            #else:
+                #return 0
 
-        sub = rospy.Subscriber('/joint_states', JointState, self.callback, queue_size=1)
-        net = nengo.Network(label=label)
-        with net:
-            net.input = nengo.Node(get_feedback_position)
-            net.output = nengo.Node(size_in = 1)
-            ens_angle = nengo.Ensemble(500, dimensions=2, radius=3, neuron_type=nengo.Direct())
-            nengo.Connection(net.input[0], ens_angle[0])
-            nengo.Connection(ens_angle[0], ens_angle[1], synapse= 0.02)
-            nengo.Connection(ens_angle, net.output, function=get_dif)
+        #sub = rospy.Subscriber('/joint_states', JointState, self.callback, queue_size=1)
+        #net = nengo.Network(label=label)
+        #with net:
+            #net.input = nengo.Node(get_feedback_position)
+            #net.output = nengo.Node(size_in = 1)
+            #ens_angle = nengo.Ensemble(500, dimensions=2, radius=3, neuron_type=nengo.Direct())
+            #nengo.Connection(net.input[0], ens_angle[0])
+            #nengo.Connection(ens_angle[0], ens_angle[1], synapse= 0.02)
+            #nengo.Connection(ens_angle, net.output, function=get_dif)
 
-        return net
+        #return net
 
 
 
@@ -127,7 +128,10 @@ class Feedback(object):
 
         def get_feedback_position(x):
             res = math.degrees(self.arm.position[joint-1])
-            res = min(max_val-1, max(min_val+1, res))
+            #res = min(max_val-1, max(min_val+1, res)) # original
+            res = min(max_val, max(min_val, res))
+            to_pub = "[min,max]: [{:.2f}, {:.2f}], joint: {}, arm_pos: {:.2f}, deg: {:.2f} res: {:.2f}".format(min_val, max_val, joint, self.arm.position[joint-1], math.degrees(self.arm.position[joint-1]), res)
+            self.feedback_data_pub.publish(to_pub)
             return res
 
         def get_mean(x):

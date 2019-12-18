@@ -14,7 +14,7 @@ import numpy as np
 from target_reaching_nengo import Item
 
 from gazebo_msgs.msg import LinkStates
-from std_msgs.msg import Float64, String
+from std_msgs.msg import Float64, String, Float64MultiArray
 
 import rospkg
 scripts_path = rospkg.RosPack().get_path('target_reaching_nengo')+'/scripts/'
@@ -23,7 +23,10 @@ import generateCSV_data
 import generate_curve_data
 import rospy
 
-class Error(object):
+import tf
+from geometry_msgs.msg import PointStamped
+
+class ErrorTF(object):
     def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'hbp'):
         self.robot          = robot
         self.subject        = Item('subject', subject_name + '::link')
@@ -47,34 +50,47 @@ class Error(object):
         self.curve_data  =  generate_curve_data_1.data
 
         self.error_class_data_pub = rospy.Publisher('/error_class_data_pub', String, queue_size=1)
+        self.error_topic = '/error'
+        self.error_pub = rospy.Publisher(self.error_topic, Float64MultiArray, queue_size=1)
+        
+        self.tf_listener = tf.TransformListener()
+        self.shoulder_frame = "arm_base_link"
+        #self.tcp_frame = "arm_tcp_link"
+        #self.subject_frame = "world"
+        self.gazebo_link_state_frame = "world"
+        
+
+    def transform_position(self, position, current_frame, target_frame):
+        point_stamped = PointStamped()
+        point_stamped.header.frame_id = current_frame
+        point_stamped.point.x = position.x
+        point_stamped.point.y = position.y
+        point_stamped.point.z = position.z
+        self.tf_listener.waitForTransform(current_frame, target_frame, rospy.Time(0),rospy.Duration(4.0))
+        point_transformed = self.tf_listener.transformPoint(target_frame, point_stamped)
+        return point_transformed.point
 
 
     def callback(self, data):
-        #print 'BLA: ', self.cmd
-        self.subject.position   = data.pose[data.name.index(self.subject.topic)].position
-        self.subject.orientation= data.twist[data.name.index(self.subject.topic)].angular
+        self.subject.position = data.pose[data.name.index(self.subject.topic)].position
+        self.subject.vector_to_shoulder = self.transform_position(self.subject.position, self.gazebo_link_state_frame, self.shoulder_frame)
+        self.tcp.position = data.pose[data.name.index(self.tcp.topic)].position
+        self.tcp.vector_to_shoulder = self.transform_position(self.tcp.position, self.gazebo_link_state_frame, self.shoulder_frame)
 
-        self.tcp.position       = data.pose[data.name.index(self.tcp.topic)].position
-        self.shoulder.position  = data.pose[data.name.index(self.shoulder.topic)].position
-        self.shoulder.position.z -= 0.11
-        # dies zeile an subject fehler schuld, nicht an tcp
+        #self.shoulder.position  = data.pose[data.name.index(self.shoulder.topic)].position
+        #self.shoulder.position.z -= 0.11
+        #self.subject.vector_to_shoulder = self.calc_vector(self.subject.position)
+        #self.tcp.vector_to_shoulder = self.calc_vector(self.tcp.position)
 
-        #y_pos_was = self.subject.position.y
-        #self.subject.vector_to_shoulder = self.check_limit(self.calc_vector(self.subject.position))
-        #if self.subject.vector_to_shoulder.y != y_pos_was:
-            #rospy.loginfo("was: {}, now: {}".format(y_pos_was, self.subject.vector_to_shoulder.y))
-        self.subject.vector_to_shoulder = self.calc_vector(self.subject.position)
-        self.tcp.vector_to_shoulder = self.calc_vector(self.tcp.position)
         self.subject.polar_pos  =  self.calc_polar(self.subject.vector_to_shoulder.x, self.subject.vector_to_shoulder.y, self.subject.vector_to_shoulder.z)
-        #rospy.loginfo("subject.polar_pos: {}".format(self.subject.polar_pos))
         self.tcp.polar_pos      =   self.calc_polar(self.tcp.vector_to_shoulder.x, self.tcp.vector_to_shoulder.y, self.tcp.vector_to_shoulder.z)
-        #rospy.loginfo("tcp.polar_pos: {}".format(self.tcp.polar_pos))
-        self.dif = self.calc_dif() # self.subject.polar_pos - self.tcp.polar_pos
-        #rospy.loginfo("dif: {}".format(self.dif))
-        #print 'POLAR: ', self.tcp.polar_pos
+        self.dif = self.calc_dif() 
         if self.learning: self.error = self.calc_error_2()
         else: self.error = self.calc_error()
-        rospy.loginfo("error [nf, ud, lr]: {}".format(self.error))
+        #rospy.loginfo("error [nf, ud, lr]: {}".format(self.error))
+        error_to_pub = Float64MultiArray()
+        error_to_pub.data = self.error
+        self.error_pub.publish(error_to_pub)
 
         subject = "({:.2f}, {:.2f}, {:.2f})".format(self.subject.vector_to_shoulder.x, self.subject.vector_to_shoulder.y, self.subject.vector_to_shoulder.z)
         tcp = "({:.2f}, {:.2f}, {:.2f})".format(self.tcp.vector_to_shoulder.x, self.tcp.vector_to_shoulder.y, self.tcp.vector_to_shoulder.z)

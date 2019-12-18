@@ -3,7 +3,7 @@
 import nengo
 import numpy as np
 
-from target_reaching_nengo import Voluntary, Base_network, Error, Feedback
+from target_reaching_nengo import Voluntary, Base_network, Error, Feedback, ErrorTF
 
 import rospy
 from gazebo_msgs.msg import LinkStates
@@ -19,30 +19,36 @@ class Main_TR_CL:
         robot = 'hbp'
         voluntary_joints = [['/' + robot + '/arm_2_joint/cmd_pos'],
                             ['/' + robot + '/arm_1_joint/cmd_pos'],
-                            #['/' + robot + '/arm_2_joint/cmd_pos' ,
-                             #'/' + robot + '/arm_3_joint/cmd_pos']]
-                            ['/' + robot + '/arm_3_joint/cmd_pos']]
+                            ['/' + robot + '/arm_2_joint/cmd_pos' ,
+                             '/' + robot + '/arm_3_joint/cmd_pos']]
+                            #['/' + robot + '/arm_3_joint/cmd_pos']]
         base_network     = Base_network(voluntary_joints = voluntary_joints, use_stim = False)
-        neuron_number = 21
+        neuron_number    = 21
 
         # motion primitives
-        # STANDARD works
-        hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
-        links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-1.7], end = [1.5], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
-        #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
-        fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-2.3], end =[-0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+        # STANDARD 
+        #hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
+        #links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-1.7], end = [1.5], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
+        #fern_nah        = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-0.5, -2.3], end =[2.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+        #fern_nah        = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-2.3], end =[-0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
-        # HBP VERSION 1
+        #HBP VERSION desired adjusted to standard near_far
+        hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
+        links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-2.8], end = [-1.55], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
+        fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-0.5, -2.3], end =[2.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+
+
+        # HBP VERSION 1 desired
         #hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-1.5], end = [0.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
         #links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [0.4], end = [1.4], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
-        #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-1.5, -2.3], end =[0.0, 2.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+        #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-1.5, -0.3], end =[0.0, 2.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
         # HBP VERSION 2
         #hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
         #links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-2.9], end = [0.1], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
         #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
-        # HBP VERSION 3 links works
+        # HBP VERSION 3 links
         #hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
         #links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-0.18], end = [2.4], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
         #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.4, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
@@ -58,8 +64,11 @@ class Main_TR_CL:
         #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [0.5, -2.3], end =[1.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
         #self.error_1 = Error(subject_name = 'unit_sphere_1', threshold = [ [-0.03, 0.03],  [-0.05, 0.05], [-0.05, 0.05]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])
+        
+        print("[[start],[end]]] lf j1: [{}, {}], ud j2: [{}, {}], nf (j2+)j3: [{}, {}]".format(links_rechts._start, links_rechts._end, hoch_runter._start, hoch_runter._end, fern_nah._start, fern_nah._end))
+        
         err = 0.05
-        self.error_1 = Error(subject_name = 'unit_sphere_1', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])
+        self.error_1 = ErrorTF(subject_name = 'unit_sphere_1', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)#threshold = [[-0.05, 0.05], [-0.1, 0.1], [-0.1, 0.1]])#threshold = [[-0.15, 0.15], [-0.15, 0.15], [-0.17, 0.17]]) # TRYOUT: , threshold = [fn, hr, lr])
 
         feedback = Feedback(neuron_number = neuron_number)
         sub = rospy.Subscriber('/gazebo/link_states', LinkStates, self.error_1.callback, queue_size=1)
@@ -90,9 +99,13 @@ class Main_TR_CL:
                 #VOLUNTARY_1 : fern nah   --> fehler r (0)
                 net_fern_nah = fern_nah.get_network_TR(label= 'near_far')
                 nengo.Connection(error_node[0], net_fern_nah.input[0], function=base_network.set_errorFN)
-                #nengo.Connection(net_fern_nah.output[0], net.f_u[fern_nah._slider])
-                #nengo.Connection(net_fern_nah.output[1], net.f_u[fern_nah._slider+1])
-                nengo.Connection(net_fern_nah.output, net.f_u[fern_nah._slider])
+                
+                # f_u 4 ouputs
+                nengo.Connection(net_fern_nah.output[0], net.f_u[fern_nah._slider])
+                nengo.Connection(net_fern_nah.output[1], net.f_u[fern_nah._slider+1])
+                
+                # f_u 3 outputs
+                #nengo.Connection(net_fern_nah.output, net.f_u[fern_nah._slider])
 
                 #VOLUNTARY_2 : hoch runter  --> fehler theta(1)
                 net_hoch_runter = hoch_runter.get_network_TR(label= 'up_down')
@@ -109,11 +122,26 @@ class Main_TR_CL:
 
 
 
-                #Propioception
-                net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= 0, min_val= -130)
-                net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 146, min_val= -18)
-                net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= 74, min_val= -100)
+                #Propioception ORIGINAL
+                #net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= 0, min_val= -130)
+                #net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 146, min_val= -18)
+                #net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= 74, min_val= -100)
+                
+                #Propioception ADJUSTED TO START_END STANDARD
+                #net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= -11, min_val= -130)
+                #net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 114, min_val= -28)
+                #net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= 85, min_val= -97)
+                
+                #Propioception ADJUSTED TO HBP VERSION and near_far
+                net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= -11, min_val= -130)
+                net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 114, min_val= -28)
+                net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= -88, min_val= -160)
 
+                #Propioception ADJUSTED TO HBP VERSION 1 desired
+                #net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= 126, min_val= -17)
+                #net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 0, min_val= -85)
+                #net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= 80, min_val= 22)
+                
 
                 nengo.Connection(net_feedback_joint3_NF.output, net_fern_nah.input[1])
                 #TODO auch net_feedback_joint2_HR_NF an fn verbinden
