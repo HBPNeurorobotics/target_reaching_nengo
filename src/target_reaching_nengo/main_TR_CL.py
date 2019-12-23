@@ -33,9 +33,14 @@ class Main_TR_CL:
         #fern_nah        = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-2.3], end =[-0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
 
         #HBP VERSION desired adjusted to standard near_far
-        hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
-        links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-2.8], end = [-1.55], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
-        fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-0.5, -2.3], end =[2.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+        #hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-0.5], end = [2.0], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
+        #links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-2.8], end = [-1.5], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
+        #fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-0.5, -2.3], end =[2.0, -0.2],  label= 'fern_nah_0', neuron_number = neuron_number)
+
+        # everywhere
+        hoch_runter     = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-2.8], end = [2.8], label= 'hoch_runter', neuron_number = neuron_number)#[2.0510], end = [-0.4106])
+        links_rechts    = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-2.8], end = [2.8], label= 'links_rechts', neuron_number = neuron_number) #  start = [-1.5948], end = [1.4762])
+        fern_nah          = Voluntary(slider = 2, joints = voluntary_joints[2], start =  [-2.8, -2.8], end =[2.8, 2.8],  label= 'fern_nah_0', neuron_number = neuron_number)
 
 
         # HBP VERSION 1 desired
@@ -133,9 +138,14 @@ class Main_TR_CL:
                 #net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= 85, min_val= -97)
                 
                 #Propioception ADJUSTED TO HBP VERSION and near_far
-                net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= -11, min_val= -130)
-                net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 114, min_val= -28)
-                net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= -88, min_val= -160)
+                #net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= -11, min_val= -130)
+                #net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 114, min_val= -28)
+                #net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= -85, min_val= -160)
+
+                # everywhere
+                net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= 160, min_val= -160)
+                net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 160, min_val= -160)
+                net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= 160, min_val= -160)
 
                 #Propioception ADJUSTED TO HBP VERSION 1 desired
                 #net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= 126, min_val= -17)

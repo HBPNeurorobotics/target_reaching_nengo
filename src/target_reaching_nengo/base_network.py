@@ -34,6 +34,7 @@ class Base_network():
         self.near_far_joint_name = '/' + self.robot + '/arm_3_joint/cmd_pos'
         self.up_down_joint_name = '/' + self.robot + '/arm_2_joint/cmd_pos'
         self.last_duplette = None
+        self.last_used_index = -1
 
     def publish_topic(self, t, x):
         if self.use_stim:
@@ -87,12 +88,15 @@ class Base_network():
                     else:
                         res.append([x[i], self.all_joints[i]])
                 # use only changed value
-                if abs(self.error[1]) >= 1 and abs(self.error[0]) < 1:
+                if (abs(self.error[1]) >= 1 and abs(self.error[0]) < 1) or (abs(self.error[1]) < 1 and abs(self.error[0]) < 1 and self.last_used_index == 0):
                     val = duplette[0][0]
-                elif abs(self.error[1]) < 1 and abs(self.error[0]) >= 1:
+                    self.last_used_index = 0
+                elif (abs(self.error[1]) < 1 and abs(self.error[0]) >= 1) or (abs(self.error[1]) < 1 and abs(self.error[0]) < 1 and self.last_used_index == 1):
                     val = duplette[1][0]
+                    self.last_used_index = 1
                 else:
                     val = (duplette[0][0] +  duplette[1][0]) / 2
+                    self.last_used_index = -1
                 #print("val: {}, res: {}, duplette: {}".format(val, res, duplette))
                 #######  BLEN ERROR #####
                 ##### DEBUG #####
