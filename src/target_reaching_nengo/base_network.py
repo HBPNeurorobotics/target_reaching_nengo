@@ -4,13 +4,7 @@ import nengo
 import numpy as np
 
 import rospy
-from std_msgs.msg import Float64, String
-from visuomotor_manager import ArmManager
-import actionlib
-
-from fzi_manipulation_msgs.msg import RawTrajectory, PlayTrajectoryAction, PlayTrajectoryGoal
-from fzi_std_msgs.msg import Float64Array
-from sensor_msgs.msg import JointState
+from std_msgs.msg import Float64
 
 class Base_network():
     def __init__(self, voluntary_joints = [],  rhythmic_joints = [], stim = None, use_stim = True):
@@ -34,7 +28,7 @@ class Base_network():
         self.near_far_joint_name = '/' + self.robot + '/arm_3_joint/cmd_pos'
         self.up_down_joint_name = '/' + self.robot + '/arm_2_joint/cmd_pos'
         self.last_duplette = None
-        self.last_used_index = -1
+        self.last_used_duplette_index = -1
 
     def publish_topic(self, t, x):
         if self.use_stim:
@@ -55,20 +49,15 @@ class Base_network():
                     if abs(self.error[2]) >= 1:
                         self._joints_pub[1][i].publish(x[i])
 
-
-    def set_start_pos(self, joint, value):
-        pub= rospy.Publisher(joint, Float64, queue_size=1)
-        pub.publish(value)
-
-    def set_errorFN(self, x):
+    def set_error_near_far(self, x):
         self.error[0] = x
         return x
 
-    def set_errorHR(self, x):
+    def set_error_up_down(self, x):
         self.error[1] = x
         return x
 
-    def set_errorLR(self, x):
+    def set_error_left_right(self, x):
         self.error[2] = x
         return x
 
@@ -77,36 +66,30 @@ class Base_network():
         net = nengo.Network(label=label)
         with net:
             def blend(x):
-                # TODO : wenn mehr als 1 joint doppelt?
                 res=[]
                 duplette=[]
                 tmp=[]
-                #print("blend x: {}".format(x))
                 for i in range(len(x)):
+                    # if near_far uses more than 1 joint
                     if self.all_joints[0].count(self.all_joints[i]) == 1:
                         duplette.append([x[i], self.all_joints[i]])
                     else:
                         res.append([x[i], self.all_joints[i]])
                 # use only changed value
-                if (abs(self.error[1]) >= 1 and abs(self.error[0]) < 1) or (abs(self.error[1]) < 1 and abs(self.error[0]) < 1 and self.last_used_index == 0):
+                if (abs(self.error[1]) >= 1 and abs(self.error[0]) < 1) or (abs(self.error[1]) < 1 and abs(self.error[0]) < 1 and self.last_used_duplette_index == 0):
                     val = duplette[0][0]
-                    self.last_used_index = 0
-                elif (abs(self.error[1]) < 1 and abs(self.error[0]) >= 1) or (abs(self.error[1]) < 1 and abs(self.error[0]) < 1 and self.last_used_index == 1):
+                    self.last_used_duplette_index = 0
+                elif (abs(self.error[1]) < 1 and abs(self.error[0]) >= 1) or (abs(self.error[1]) < 1 and abs(self.error[0]) < 1 and self.last_used_duplette_index == 1):
                     val = duplette[1][0]
-                    self.last_used_index = 1
+                    self.last_used_duplette_index = 1
                 else:
                     val = (duplette[0][0] +  duplette[1][0]) / 2
-                    self.last_used_index = -1
-                #print("val: {}, res: {}, duplette: {}".format(val, res, duplette))
-                #######  BLEN ERROR #####
-                ##### DEBUG #####
-                #val = duplette[1][0]
+                    self.last_used_duplette_index = -1
                 res.append([val, duplette[0][1]])
                 for i in range(len(self._joints_pub[0])):
                     for j in range(len(res)):
                         if self._joints_pub[0][i] == res[j][1]:
                             tmp.append(res[j][0])
-                #print("res: {}, tmp: {}".format(res, tmp))
                 return tmp
 
             def id_func(x):
@@ -118,19 +101,6 @@ class Base_network():
 
             net.f_u= nengo.Ensemble(n_neurons=100, dimensions=len(self.all_joints), radius=2, neuron_type=nengo.Direct(), label ='g(f(u))')   #direct
 
-            # bijective 3 to 3
-            #if len(self._joints_pub[0]) is not len(self.all_joints):
-                #net.f_u_blended = nengo.Ensemble(n_neurons=100, dimensions=len(set(self._joints_pub[0])), radius=2, neuron_type=nengo.Direct(), label= 'g(f(u)) blended')    #direct
-                #nengo.Connection(net.f_u, net.f_u_blended, synapse=0.001)
-                #net.ros_out = nengo.Node(self.publish_topic, size_in=len(self._joints_pub[0]) )
-                #nengo.Connection(net.f_u_blended, net.ros_out)#, synapse=0.1)
-            #else:
-                #net.f_u_blended = nengo.Ensemble(n_neurons=100, dimensions=len(set(self._joints_pub[0])), radius=2, neuron_type=nengo.Direct(), label= 'g(f(u)) blended')    #direct
-                #nengo.Connection(net.f_u, net.f_u_blended, function=id_func, synapse=0.001)
-                #net.ros_out = nengo.Node(self.publish_topic, size_in=len(self._joints_pub[0]))
-                
-                
-            # only surjective, f_u output number is 4 to 3
             if len(self._joints_pub[0]) is not len(self.all_joints):
                 net.f_u_blended = nengo.Ensemble(n_neurons=100, dimensions=len(set(self._joints_pub[0])), radius=2, neuron_type=nengo.Direct(), label= 'g(f(u)) blended')    #direct
                 nengo.Connection(net.f_u, net.f_u_blended, function= blend, synapse=0.001)
@@ -141,6 +111,6 @@ class Base_network():
                 nengo.Connection(net.f_u, net.f_u_blended, function=id_func, synapse=0.001)
                 net.ros_out = nengo.Node(self.publish_topic, size_in=len(self._joints_pub[0]))
                 nengo.Connection(net.f_u_blended, net.ros_out)
-                
-                
+
+
         return net

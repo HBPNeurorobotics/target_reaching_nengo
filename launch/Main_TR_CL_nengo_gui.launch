@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="min_reach_position" default="[0.5, 0, 0.13]"/>
-  <arg name="max_reach_position" default="[0.8, 0.5, 0.13]"/>
   <node name="Main_TR_CL_nengo_gui" pkg="target_reaching_nengo" type="start_nengo_gui.py" output="screen">
-    <rosparam param="min_reach_position" subst_value="True">$(arg min_reach_position)</rosparam>
-    <rosparam param="max_reach_position" subst_value="True">$(arg max_reach_position)</rosparam>
   </node>
 </launch>

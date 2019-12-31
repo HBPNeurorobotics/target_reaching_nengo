@@ -4,8 +4,6 @@ import rospy
 from std_msgs.msg import Float64, String
 from visuomotor_manager import ArmManager
 import actionlib
-from fzi_manipulation_msgs.msg import RawTrajectory, PlayTrajectoryAction, PlayTrajectoryGoal
-from fzi_std_msgs.msg import Float64Array
 from sensor_msgs.msg import JointState
 from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
 from trajectory_msgs.msg import JointTrajectoryPoint
@@ -15,18 +13,18 @@ class TargetReachingToHBPMapping:
         self.has_joint_state = False
         self.has_joint_cmd = False
         self.pose_reference_frame = rospy.get_param('~pose_reference_frame', 'table_corner_link')
-        self.arm_manager = ArmManager(self.pose_reference_frame)
+        arm_trajectory_controller_param = "/arm/" + rospy.get_param('~arm_trajectory_controller_name', 'arm_pos_traj_controller')
+        self.joint_names = rospy.get_param(arm_trajectory_controller_param + '/joints')
         self.joint_state_sub = rospy.Subscriber("/joint_states", JointState, self.joint_states_callback)
-        robot = 'hbp'
+        self.robot = rospy.get_param('~robot', 'hbp')
         self.arm_joint_cmds = {}
         self.last_positions_to_send = []
-        self.arm_1_joint_cmd_sub = rospy.Subscriber('/' + robot + '/arm_1_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_1_joint", queue_size=1)
-        self.arm_2_joint_cmd_sub = rospy.Subscriber('/' + robot + '/arm_2_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_2_joint", queue_size=1)
-        self.arm_3_joint_cmd_sub = rospy.Subscriber('/' + robot + '/arm_3_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_3_joint", queue_size=1)
+        self.arm_1_joint_cmd_sub = rospy.Subscriber('/' + self.robot + '/arm_1_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_1_joint", queue_size=1)
+        self.arm_2_joint_cmd_sub = rospy.Subscriber('/' + self.robot + '/arm_2_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_2_joint", queue_size=1)
+        self.arm_3_joint_cmd_sub = rospy.Subscriber('/' + self.robot + '/arm_3_joint/cmd_pos', Float64, self.cmd_callback, callback_args="arm_3_joint", queue_size=1)
         self.nengo_joint_cmds_pub = rospy.Publisher('/nengo_joint_cmds', String, queue_size=1)
-        arm_trajectory_controller_param = "/arm/" + "arm_eff_traj_controller"
         self.arm_traj_client = actionlib.SimpleActionClient(arm_trajectory_controller_param + "/follow_joint_trajectory", FollowJointTrajectoryAction)
-        self.pos_diff_tolerance = 0.009
+        self.pos_diff_tolerance = rospy.get_param('~pos_diff_tolerance', 0.009)
 
     def cmd_callback(self, cmd, joint_name):
         self.has_joint_cmd = True
@@ -44,8 +42,7 @@ class TargetReachingToHBPMapping:
         self.nengo_joint_cmds_pub.publish(to_pub)
 
     def joint_states_callback(self, joint_state):
-        self.last_joint_state = list(joint_state.position[0:len(self.arm_manager.joint_names)])
-        rospy.loginfo("current [j1, j2, j3]: [{:.2f}, {:.2f}, {:.2f}]".format(self.last_joint_state[0],self.last_joint_state[1],self.last_joint_state[2]))
+        self.last_joint_state = list(joint_state.position[0:len(self.joint_names)])
         if not self.has_joint_state:
             self.has_joint_state = True
 
@@ -68,9 +65,9 @@ class TargetReachingToHBPMapping:
         self.last_positions_to_send = positions_to_send
         self.arm_joint_cmds = {}
         arm_goal = FollowJointTrajectoryGoal()
-        arm_goal.trajectory.joint_names = self.arm_manager.joint_names
+        arm_goal.trajectory.joint_names = self.joint_names
         waypoint = JointTrajectoryPoint()
-        for i in range(len(self.arm_manager.joint_names)):
+        for i in range(len(self.joint_names)):
             waypoint.positions = positions_to_send
         waypoint.time_from_start = rospy.Duration.from_sec(duration)
         arm_goal.trajectory.points.append(waypoint)

@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
+from geometry_msgs.msg import Point
+
 class Item(object):
     def __init__(self, name, topic):
-        self.position           = None
+        self.position           = Point()
         self.orientation        = None
         self.name               = name
         self.topic              = topic
