@@ -2,14 +2,11 @@
 
 import nengo
 import numpy as np
+import math
+import rospy
 
 from target_reaching_nengo import Voluntary, Base_network, Feedback, ErrorTF
-#from sensor_msgs.msg import JointState
-
-import rospy
-from gazebo_msgs.msg import LinkStates
-import sys
-import generateCSV_data
+from target_reaching_common import GenerateCSV_data
 
 class Main_TR_CL:
     def __init__(self):
@@ -21,25 +18,33 @@ class Main_TR_CL:
         base_network = Base_network(voluntary_joints = voluntary_joints, use_stim = False)
         neuron_number = 21
 
-        up_down = Voluntary(slider = 0, joints = voluntary_joints[0], start = [-2.8], end = [2.8], label = 'up_down', neuron_number = neuron_number)
-        left_right = Voluntary(slider = 1, joints = voluntary_joints[1], start = [-2.8], end = [2.8], label = 'left_right', neuron_number = neuron_number)
-        near_far = Voluntary(slider = 2, joints = voluntary_joints[2], start = [-2.8, -2.8], end = [2.8, 2.8],  label = 'near_far', neuron_number = neuron_number)
+        self.up_down_lower_limit = rospy.get_param('~up_down_lower_limit', [-2.8])
+        self.up_down_upper_limit = rospy.get_param('~up_down_upper_limit', [2.8])
+        self.left_right_lower_limit = rospy.get_param('~left_right_lower_limit', [-2.8])
+        self.left_right_upper_limit = rospy.get_param('~left_right_upper_limit', [2.8])
+        self.near_far_lower_limit = rospy.get_param('~near_far_lower_limit', [-2.8, -2.8])
+        self.near_far_upper_limit = rospy.get_param('~near_far_upper_limit', [2.8, 2.8])
+
+        up_down = Voluntary(slider = 0, joints = voluntary_joints[0], start = self.up_down_lower_limit,
+                            end = self.up_down_upper_limit, label = 'up_down', neuron_number = neuron_number)
+        left_right = Voluntary(slider = 1, joints = voluntary_joints[1], start = self.left_right_lower_limit,
+                               end = self.left_right_upper_limit, label = 'left_right', neuron_number = neuron_number)
+        near_far = Voluntary(slider = 2, joints = voluntary_joints[2], start = self.near_far_lower_limit,
+                             end = self.near_far_upper_limit,  label = 'near_far', neuron_number = neuron_number)
 
         err = 0.05
-        self.error = ErrorTF(subject_name = 'unit_sphere_1', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)
+        self.error = ErrorTF(subject_name = 'target_reaching_subject', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)
 
         feedback = Feedback(neuron_number = neuron_number)
-        #sub = rospy.Subscriber('/gazebo/link_states', LinkStates, self.error.callback, queue_size=1)
-        #sub = rospy.Subscriber("/joint_states", JointState, self.error.callback, queue_size=1)
-        csv_x = generateCSV_data.GenerateCSV_data(file_name ='x')
-        csv_y = generateCSV_data.GenerateCSV_data(file_name ='y')
-        csv_z = generateCSV_data.GenerateCSV_data(file_name ='z')
-        csv_subject_x = generateCSV_data.GenerateCSV_data(file_name ='subject_x')
-        csv_subject_y = generateCSV_data.GenerateCSV_data(file_name ='subject_y')
-        csv_subject_z = generateCSV_data.GenerateCSV_data(file_name ='subject_z')
-        csv_error_LR = generateCSV_data.GenerateCSV_data(file_name ='left_right')
-        csv_error_UD = generateCSV_data.GenerateCSV_data(file_name ='up_down')
-        csv_error_NF = generateCSV_data.GenerateCSV_data(file_name ='near_far')
+        csv_x = GenerateCSV_data(file_name ='x')
+        csv_y = GenerateCSV_data(file_name ='y')
+        csv_z = GenerateCSV_data(file_name ='z')
+        csv_subject_x = GenerateCSV_data(file_name ='subject_x')
+        csv_subject_y = GenerateCSV_data(file_name ='subject_y')
+        csv_subject_z = GenerateCSV_data(file_name ='subject_z')
+        csv_error_LR = GenerateCSV_data(file_name ='left_right')
+        csv_error_UD = GenerateCSV_data(file_name ='up_down')
+        csv_error_NF = GenerateCSV_data(file_name ='near_far')
 
         self.model = nengo.Network()
         with self.model:
@@ -73,9 +78,17 @@ class Main_TR_CL:
                 nengo.Connection(net_left_right.output, net.f_u[left_right._slider])
 
                 #Propioception
-                net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= 160, min_val= -160)
-                net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= 160, min_val= -160)
-                net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= 160, min_val= -160)
+                joint1_min_val = math.degrees(np.min(self.left_right_lower_limit))
+                joint1_max_val = math.degrees(np.max(self.left_right_upper_limit))
+                joint2_min_val = math.degrees(np.min([self.up_down_lower_limit[0], self.near_far_lower_limit[0]]))
+                joint2_max_val = math.degrees(np.max([self.up_down_upper_limit[0], self.near_far_upper_limit[0]]))
+                joint3_min_val = math.degrees(np.min(self.near_far_lower_limit[1]))
+                joint3_max_val = math.degrees(np.max(self.near_far_upper_limit[1]))
+
+                # TODO: change from degrees to radians if possible
+                net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= joint3_max_val, min_val= joint3_min_val)
+                net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= joint2_max_val, min_val= joint2_min_val)
+                net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= joint1_max_val, min_val= joint1_min_val)
 
                 nengo.Connection(net_feedback_joint3_NF.output, net_near_far.input[1])
                 nengo.Connection(net_feedback_joint2_HR_NF.output, net_up_down.input[1])

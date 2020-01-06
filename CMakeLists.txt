@@ -10,6 +10,7 @@ project(target_reaching_nengo)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  target_reaching_common
 )
 
 ## System dependencies are found with CMake's conventions
