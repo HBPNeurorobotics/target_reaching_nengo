@@ -30,7 +30,7 @@ class Feedback(object):
                 self.threshold_mapping[1][sensor_joints[i]] = threshold[1][i]
         self.feedback_data_pub = rospy.Publisher("/feedback_data_pub", String, queue_size = 1)
 
-    # TODO: 1) arm joints are not neccessary first in the data, 2) only arm joints are needed
+    # TODO: 1) arm joints are not necessary first in the data, 2) only arm joints are needed
     def callback(self, data):
         self.arm.position = data.position
         self.arm.name = data.name

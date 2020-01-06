@@ -2,27 +2,21 @@
 
 target reaching code with primitives, arm_robot and Nengo
 
-
-## include the scirpts in python
-* [ ] FIX THIS HACK
-change the local paths in:
-* main_TR_CL.py
-* error.py
-
-
 ## to start the main target reaching
-* start the nengo gui
+* gazebo with arm and target should be running
+* start the nengo gui:
 ```
-cd target_reaching_nengo/src
-nengo
+roslaunch target_reaching_nengo Main_TR_CL_nengo_gui.launch
 ```
-* in the gui select "main_TR_CL.py" then wait until it loads
-* start
-
+* in the gui click on "start" button
+* for HBP mapping is necessary:
+```
+roslaunch target_reaching_nengo hbp_mapping.launch
+```
 
 
 ## Nengo and ROS
-to get a ros publisher running from the nengo_gui, we added a line in the nengo_gui/main.py file before the start call:
+to get a ros publisher running from the nengo_gui, we added a line in the nengo_gui/main.py (something like ~/.local/lib/python2.7/site-packages/nengo_gui/main.py) file before the start call:
 
 ``` python
     import rospy    # add this
@@ -36,8 +30,3 @@ to get a ros publisher running from the nengo_gui, we added a line in the nengo_
 ```
 
 https://github.com/nengo/nengo_gui/issues/827
-
-
-## code main repository
-the full code repo for snn nengo is here --> auf branch pub_sub:
-https://ids-git.fzi.de/steffen/snn_nengo_motion/tree/pub_sub/src/nengo_ros/src_lea/motion_modules
