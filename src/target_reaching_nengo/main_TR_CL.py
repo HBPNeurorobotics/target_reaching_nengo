@@ -5,7 +5,7 @@ import numpy as np
 import math
 import rospy
 
-from target_reaching_nengo import Voluntary, Base_network, Feedback, ErrorTF
+from target_reaching_nengo import Voluntary, Base_network, Feedback, Error
 from target_reaching_common import GenerateCSV_data
 
 class Main_TR_CL:
@@ -33,7 +33,7 @@ class Main_TR_CL:
                              end = self.near_far_upper_limit,  label = 'near_far', neuron_number = neuron_number)
 
         err = 0.05
-        self.error = ErrorTF(subject_name = 'target_reaching_subject', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)
+        self.error = Error(subject_name = 'target_reaching_subject', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)
 
         feedback = Feedback(neuron_number = neuron_number)
         csv_x = GenerateCSV_data(file_name ='x')
