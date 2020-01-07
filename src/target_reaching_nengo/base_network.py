@@ -7,7 +7,7 @@ import rospy
 from std_msgs.msg import Float64
 
 class Base_network():
-    def __init__(self, voluntary_joints = [],  rhythmic_joints = [], stim = None, use_stim = True):
+    def __init__(self, voluntary_joints = [],  rhythmic_joints = [], stim = None, use_stim = True, robot = 'hbp', arm_1_joint_cmd_pos_name = '', arm_2_joint_cmd_pos_name = '', arm_3_joint_cmd_pos_name = ''):
         self.stim = stim
         self.use_stim = use_stim
         self.slider_nr = len(voluntary_joints) + 2* len(rhythmic_joints)
@@ -24,9 +24,10 @@ class Base_network():
             self._joints_pub[0].append(i)
             self._joints_pub[1].append(rospy.Publisher(i, Float64, queue_size=1))
         self.result = []
-        self.robot = 'hbp'
-        self.near_far_joint_name = '/' + self.robot + '/arm_3_joint/cmd_pos'
-        self.up_down_joint_name = '/' + self.robot + '/arm_2_joint/cmd_pos'
+        self.robot = robot
+        self.arm_1_joint_cmd_pos_name = arm_1_joint_cmd_pos_name
+        self.arm_2_joint_cmd_pos_name = arm_2_joint_cmd_pos_name
+        self.arm_3_joint_cmd_pos_name = arm_3_joint_cmd_pos_name
         self.last_duplette = None
         self.last_used_duplette_index = -1
 
@@ -37,11 +38,11 @@ class Base_network():
         else:  # FOR TR(=TARGET REACHING)
             for i in range(len(self._joints_pub[1])):
                 # NEAR FAR
-                if self._joints_pub[0][i] == self.near_far_joint_name:
+                if self._joints_pub[0][i] == self.arm_3_joint_cmd_pos_name:
                     if abs(self.error[0]) >= 1:
                         self._joints_pub[1][i].publish(x[i])
                 # UP DOWN
-                elif self._joints_pub[0][i] == self.up_down_joint_name:
+                elif self._joints_pub[0][i] == self.arm_2_joint_cmd_pos_name:
                     if abs(self.error[1]) >= 1:
                         self._joints_pub[1][i].publish(x[i])
                 # LEFT RIGHT

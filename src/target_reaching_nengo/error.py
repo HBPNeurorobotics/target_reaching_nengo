@@ -21,12 +21,10 @@ import tf
 from geometry_msgs.msg import PointStamped
 
 class Error(object):
-    def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'hbp'):
-        self.robot          = robot
-        self.subject        = Item('subject', subject_name + '::link')
-        self.cmd            = Item('cmd', 'cmd_TR')
-        self.tcp            = Item('tcp', robot + '::svh_hand_z')
-        self.shoulder       = Item('shoulder', robot + '::arm_1_link')
+    def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False):
+        self.subject        = Item('subject')
+        self.tcp            = Item('tcp')
+        self.shoulder       = Item('shoulder')
         self.threshold      = threshold
 
         self.learning       = learning
@@ -41,16 +39,18 @@ class Error(object):
         generate_curve_data_1 = Generate_curve(n_points, amplitude, period, phase_shift, vertical_shift, do_print)
         self.curve_data  =  generate_curve_data_1.data
 
-        self.error_class_data_pub = rospy.Publisher('/error_class_data_pub', String, queue_size=1)
-        self.error_topic = '/error'
+        self.error_class_data_topic = rospy.get_param('~error_class_data_topic', '/error_class_data_pub')
+        self.error_class_data_pub = rospy.Publisher(self.error_class_data_topic, String, queue_size=1)
+        self.error_topic = rospy.get_param('~error_topic', '/error')
         self.error_pub = rospy.Publisher(self.error_topic, Float64MultiArray, queue_size=1)
         self.tf_listener = tf.TransformListener()
-        self.shoulder_frame = "arm_base_link"
-        self.tcp_frame = "arm_tcp_link"
+        self.shoulder_frame = rospy.get_param('~shoulder_frame', 'arm_base_link')
+        self.tcp_frame = rospy.get_param('~tcp_frame', 'arm_tcp_link')
         self.tcp.position.x = 0.0
         self.tcp.position.y = 0.0
         self.tcp.position.z = 0.0
-        self.target_position_sub = rospy.Subscriber('/target_position', PointStamped, self.target_position_callback, queue_size=1)
+        self.target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
+        self.target_position_sub = rospy.Subscriber(self.target_position_topic, PointStamped, self.target_position_callback, queue_size=1)
 
     def target_position_callback(self, data):
         self.subject.position = data.point

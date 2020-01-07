@@ -10,12 +10,18 @@ from target_reaching_common import GenerateCSV_data
 
 class Main_TR_CL:
     def __init__(self):
-        robot = 'hbp'
-        voluntary_joints = [['/' + robot + '/arm_2_joint/cmd_pos'],
-                            ['/' + robot + '/arm_1_joint/cmd_pos'],
-                            ['/' + robot + '/arm_2_joint/cmd_pos' ,
-                             '/' + robot + '/arm_3_joint/cmd_pos']]
-        base_network = Base_network(voluntary_joints = voluntary_joints, use_stim = False)
+        self.robot = rospy.get_param('~robot', 'hbp')
+        self.arm_1_joint_cmd_pos_name = '/' + self.robot + '/arm_1_joint/cmd_pos'
+        self.arm_2_joint_cmd_pos_name = '/' + self.robot + '/arm_2_joint/cmd_pos'
+        self.arm_3_joint_cmd_pos_name = '/' + self.robot + '/arm_3_joint/cmd_pos'
+        voluntary_joints = [[self.arm_2_joint_cmd_pos_name],
+                            [self.arm_1_joint_cmd_pos_name],
+                            [self.arm_2_joint_cmd_pos_name,
+                             self.arm_3_joint_cmd_pos_name]]
+        base_network = Base_network(voluntary_joints = voluntary_joints, use_stim = False, robot = self.robot,
+                                    arm_1_joint_cmd_pos_name = self.arm_1_joint_cmd_pos_name,
+                                    arm_2_joint_cmd_pos_name = self.arm_2_joint_cmd_pos_name,
+                                    arm_3_joint_cmd_pos_name = self.arm_3_joint_cmd_pos_name)
         neuron_number = 21
 
         self.up_down_lower_limit = rospy.get_param('~up_down_lower_limit', [-2.8])
@@ -33,7 +39,7 @@ class Main_TR_CL:
                              end = self.near_far_upper_limit,  label = 'near_far', neuron_number = neuron_number)
 
         err = 0.05
-        self.error = Error(subject_name = 'target_reaching_subject', threshold = [ [-err, err],  [-err, err], [-err, err]], robot = robot)
+        self.error = Error(subject_name = 'target_reaching_subject', threshold = [ [-err, err],  [-err, err], [-err, err]])
 
         feedback = Feedback(neuron_number = neuron_number)
         csv_x = GenerateCSV_data(file_name ='x')
