@@ -10,7 +10,6 @@ from target_reaching_common import GenerateCSV_data
 
 class Main_TR_CL:
     def __init__(self):
-        rospy.init_node('Main_TR_CL_nengo_ros', anonymous=True, disable_signals=True)
         robot = rospy.get_param('~robot', 'hbp')
         arm_1_joint_cmd_pos_name = '/' + robot + '/arm_1_joint/cmd_pos'
         arm_2_joint_cmd_pos_name = '/' + robot + '/arm_2_joint/cmd_pos'
