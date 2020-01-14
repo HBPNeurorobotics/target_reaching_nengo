@@ -7,7 +7,7 @@ import rospy
 from std_msgs.msg import Float64
 
 class Base_network():
-    def __init__(self, voluntary_joints = [],  rhythmic_joints = [], stim = None, use_stim = True, robot = 'hbp', arm_1_joint_cmd_pos_name = '', arm_2_joint_cmd_pos_name = '', arm_3_joint_cmd_pos_name = ''):
+    def __init__(self, voluntary_joints = [],  rhythmic_joints = [], stim = None, use_stim = True, arm_1_joint_cmd_pos_name = '', arm_2_joint_cmd_pos_name = '', arm_3_joint_cmd_pos_name = ''):
         self.stim = stim
         self.use_stim = use_stim
         self.slider_nr = len(voluntary_joints) + 2* len(rhythmic_joints)
@@ -24,7 +24,6 @@ class Base_network():
             self._joints_pub[0].append(i)
             self._joints_pub[1].append(rospy.Publisher(i, Float64, queue_size=1))
         self.result = []
-        self.robot = robot
         self.arm_1_joint_cmd_pos_name = arm_1_joint_cmd_pos_name
         self.arm_2_joint_cmd_pos_name = arm_2_joint_cmd_pos_name
         self.arm_3_joint_cmd_pos_name = arm_3_joint_cmd_pos_name

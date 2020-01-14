@@ -12,19 +12,18 @@ class TargetReachingToHBPMapping:
     def __init__(self):
         self.has_joint_state = False
         self.has_joint_cmd = False
-        self.pose_reference_frame = rospy.get_param('~pose_reference_frame', 'table_corner_link')
         arm_trajectory_controller_param = "/arm/" + rospy.get_param('~arm_trajectory_controller_name', 'arm_pos_traj_controller')
         self.joint_names = rospy.get_param(arm_trajectory_controller_param + '/joints')
         self.joint_state_sub = rospy.Subscriber("/joint_states", JointState, self.joint_states_callback)
-        self.robot = rospy.get_param('~robot', 'hbp')
+        robot = rospy.get_param('~robot', 'hbp')
         self.arm_joint_cmds = {}
         self.last_positions_to_send = []
-        self.arm_1_joint_cmd_pos_name = '/' + self.robot + '/arm_1_joint/cmd_pos'
-        self.arm_2_joint_cmd_pos_name = '/' + self.robot + '/arm_2_joint/cmd_pos'
-        self.arm_3_joint_cmd_pos_name = '/' + self.robot + '/arm_3_joint/cmd_pos'
-        self.arm_1_joint_cmd_sub = rospy.Subscriber(self.arm_1_joint_cmd_pos_name, Float64, self.cmd_callback, callback_args="arm_1_joint", queue_size=1)
-        self.arm_2_joint_cmd_sub = rospy.Subscriber(self.arm_2_joint_cmd_pos_name, Float64, self.cmd_callback, callback_args="arm_2_joint", queue_size=1)
-        self.arm_3_joint_cmd_sub = rospy.Subscriber(self.arm_3_joint_cmd_pos_name, Float64, self.cmd_callback, callback_args="arm_3_joint", queue_size=1)
+        arm_1_joint_cmd_pos_name = '/' + robot + '/arm_1_joint/cmd_pos'
+        arm_2_joint_cmd_pos_name = '/' + robot + '/arm_2_joint/cmd_pos'
+        arm_3_joint_cmd_pos_name = '/' + robot + '/arm_3_joint/cmd_pos'
+        self.arm_1_joint_cmd_sub = rospy.Subscriber(arm_1_joint_cmd_pos_name, Float64, self.cmd_callback, callback_args="arm_1_joint", queue_size=1)
+        self.arm_2_joint_cmd_sub = rospy.Subscriber(arm_2_joint_cmd_pos_name, Float64, self.cmd_callback, callback_args="arm_2_joint", queue_size=1)
+        self.arm_3_joint_cmd_sub = rospy.Subscriber(arm_3_joint_cmd_pos_name, Float64, self.cmd_callback, callback_args="arm_3_joint", queue_size=1)
         self.nengo_joint_cmds_pub = rospy.Publisher('/nengo_joint_cmds', String, queue_size=1)
         self.arm_traj_client = actionlib.SimpleActionClient(arm_trajectory_controller_param + "/follow_joint_trajectory", FollowJointTrajectoryAction)
         self.pos_diff_tolerance = rospy.get_param('~pos_diff_tolerance', 0.009)

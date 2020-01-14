@@ -12,7 +12,6 @@ import nengo
 import numpy as np
 
 from target_reaching_nengo import Item
-from gazebo_msgs.msg import LinkStates
 from std_msgs.msg import String, Float64MultiArray
 from target_reaching_common import Generate_curve
 import rospy
@@ -39,18 +38,18 @@ class Error(object):
         generate_curve_data_1 = Generate_curve(n_points, amplitude, period, phase_shift, vertical_shift, do_print)
         self.curve_data  =  generate_curve_data_1.data
 
-        self.error_class_data_topic = rospy.get_param('~error_class_data_topic', '/error_class_data_pub')
-        self.error_class_data_pub = rospy.Publisher(self.error_class_data_topic, String, queue_size=1)
-        self.error_topic = rospy.get_param('~error_topic', '/error')
-        self.error_pub = rospy.Publisher(self.error_topic, Float64MultiArray, queue_size=1)
+        error_class_data_topic = rospy.get_param('~error_class_data_topic', '/error_class_data_pub')
+        self.error_class_data_pub = rospy.Publisher(error_class_data_topic, String, queue_size=1)
+        error_topic = rospy.get_param('~error_topic', '/error')
+        self.error_pub = rospy.Publisher(error_topic, Float64MultiArray, queue_size=1)
         self.tf_listener = tf.TransformListener()
         self.shoulder_frame = rospy.get_param('~shoulder_frame', 'arm_base_link')
         self.tcp_frame = rospy.get_param('~tcp_frame', 'arm_tcp_link')
         self.tcp.position.x = 0.0
         self.tcp.position.y = 0.0
         self.tcp.position.z = 0.0
-        self.target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
-        self.target_position_sub = rospy.Subscriber(self.target_position_topic, PointStamped, self.target_position_callback, queue_size=1)
+        target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
+        self.target_position_sub = rospy.Subscriber(target_position_topic, PointStamped, self.target_position_callback, queue_size=1)
 
     def target_position_callback(self, data):
         self.subject.position = data.point

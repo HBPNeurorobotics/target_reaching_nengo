@@ -10,33 +10,33 @@ from target_reaching_common import GenerateCSV_data
 
 class Main_TR_CL:
     def __init__(self):
-        self.robot = rospy.get_param('~robot', 'hbp')
-        self.arm_1_joint_cmd_pos_name = '/' + self.robot + '/arm_1_joint/cmd_pos'
-        self.arm_2_joint_cmd_pos_name = '/' + self.robot + '/arm_2_joint/cmd_pos'
-        self.arm_3_joint_cmd_pos_name = '/' + self.robot + '/arm_3_joint/cmd_pos'
-        voluntary_joints = [[self.arm_2_joint_cmd_pos_name],
-                            [self.arm_1_joint_cmd_pos_name],
-                            [self.arm_2_joint_cmd_pos_name,
-                             self.arm_3_joint_cmd_pos_name]]
-        base_network = Base_network(voluntary_joints = voluntary_joints, use_stim = False, robot = self.robot,
-                                    arm_1_joint_cmd_pos_name = self.arm_1_joint_cmd_pos_name,
-                                    arm_2_joint_cmd_pos_name = self.arm_2_joint_cmd_pos_name,
-                                    arm_3_joint_cmd_pos_name = self.arm_3_joint_cmd_pos_name)
+        robot = rospy.get_param('~robot', 'hbp')
+        arm_1_joint_cmd_pos_name = '/' + robot + '/arm_1_joint/cmd_pos'
+        arm_2_joint_cmd_pos_name = '/' + robot + '/arm_2_joint/cmd_pos'
+        arm_3_joint_cmd_pos_name = '/' + robot + '/arm_3_joint/cmd_pos'
+        voluntary_joints = [[arm_2_joint_cmd_pos_name],
+                            [arm_1_joint_cmd_pos_name],
+                            [arm_2_joint_cmd_pos_name,
+                             arm_3_joint_cmd_pos_name]]
+        base_network = Base_network(voluntary_joints = voluntary_joints, use_stim = False,
+                                    arm_1_joint_cmd_pos_name = arm_1_joint_cmd_pos_name,
+                                    arm_2_joint_cmd_pos_name = arm_2_joint_cmd_pos_name,
+                                    arm_3_joint_cmd_pos_name = arm_3_joint_cmd_pos_name)
         neuron_number = 21
 
-        self.up_down_lower_limit = rospy.get_param('~up_down_lower_limit', [-2.8])
-        self.up_down_upper_limit = rospy.get_param('~up_down_upper_limit', [2.8])
-        self.left_right_lower_limit = rospy.get_param('~left_right_lower_limit', [-2.8])
-        self.left_right_upper_limit = rospy.get_param('~left_right_upper_limit', [2.8])
-        self.near_far_lower_limit = rospy.get_param('~near_far_lower_limit', [-2.8, -2.8])
-        self.near_far_upper_limit = rospy.get_param('~near_far_upper_limit', [2.8, 2.8])
+        up_down_lower_limit = rospy.get_param('~up_down_lower_limit', [-2.8])
+        up_down_upper_limit = rospy.get_param('~up_down_upper_limit', [2.8])
+        left_right_lower_limit = rospy.get_param('~left_right_lower_limit', [-2.8])
+        left_right_upper_limit = rospy.get_param('~left_right_upper_limit', [2.8])
+        near_far_lower_limit = rospy.get_param('~near_far_lower_limit', [-2.8, -2.8])
+        near_far_upper_limit = rospy.get_param('~near_far_upper_limit', [2.8, 2.8])
 
-        up_down = Voluntary(slider = 0, joints = voluntary_joints[0], start = self.up_down_lower_limit,
-                            end = self.up_down_upper_limit, label = 'up_down', neuron_number = neuron_number)
-        left_right = Voluntary(slider = 1, joints = voluntary_joints[1], start = self.left_right_lower_limit,
-                               end = self.left_right_upper_limit, label = 'left_right', neuron_number = neuron_number)
-        near_far = Voluntary(slider = 2, joints = voluntary_joints[2], start = self.near_far_lower_limit,
-                             end = self.near_far_upper_limit,  label = 'near_far', neuron_number = neuron_number)
+        up_down = Voluntary(slider = 0, joints = voluntary_joints[0], start = up_down_lower_limit,
+                            end = up_down_upper_limit, label = 'up_down', neuron_number = neuron_number)
+        left_right = Voluntary(slider = 1, joints = voluntary_joints[1], start = left_right_lower_limit,
+                               end = left_right_upper_limit, label = 'left_right', neuron_number = neuron_number)
+        near_far = Voluntary(slider = 2, joints = voluntary_joints[2], start = near_far_lower_limit,
+                             end = near_far_upper_limit,  label = 'near_far', neuron_number = neuron_number)
 
         err = 0.05
         self.error = Error(subject_name = 'target_reaching_subject', threshold = [ [-err, err],  [-err, err], [-err, err]])
@@ -84,12 +84,12 @@ class Main_TR_CL:
                 nengo.Connection(net_left_right.output, net.f_u[left_right._slider])
 
                 #Propioception
-                joint1_min_val = math.degrees(np.min(self.left_right_lower_limit))
-                joint1_max_val = math.degrees(np.max(self.left_right_upper_limit))
-                joint2_min_val = math.degrees(np.min([self.up_down_lower_limit[0], self.near_far_lower_limit[0]]))
-                joint2_max_val = math.degrees(np.max([self.up_down_upper_limit[0], self.near_far_upper_limit[0]]))
-                joint3_min_val = math.degrees(np.min(self.near_far_lower_limit[1]))
-                joint3_max_val = math.degrees(np.max(self.near_far_upper_limit[1]))
+                joint1_min_val = math.degrees(np.min(left_right_lower_limit))
+                joint1_max_val = math.degrees(np.max(left_right_upper_limit))
+                joint2_min_val = math.degrees(np.min([up_down_lower_limit[0], near_far_lower_limit[0]]))
+                joint2_max_val = math.degrees(np.max([up_down_upper_limit[0], near_far_upper_limit[0]]))
+                joint3_min_val = math.degrees(np.min(near_far_lower_limit[1]))
+                joint3_max_val = math.degrees(np.max(near_far_upper_limit[1]))
 
                 # TODO: change from degrees to radians if possible
                 net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= joint3_max_val, min_val= joint3_min_val)
