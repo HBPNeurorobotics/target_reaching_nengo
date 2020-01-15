@@ -55,8 +55,8 @@ class Error(object):
         self.subject.position = data.point
         self.subject_frame = data.header.frame_id
 
-        self.subject.vector_to_shoulder = self.transform_position(self.subject.position, self.subject_frame, self.shoulder_frame)
-        self.tcp.vector_to_shoulder = self.transform_position(self.tcp.position, self.tcp_frame, self.shoulder_frame)
+        self.subject.vector_to_shoulder = self.transform_position(self.subject.position, self.subject_frame, target_frame = self.shoulder_frame)
+        self.tcp.vector_to_shoulder = self.transform_position(self.tcp.position, self.tcp_frame, target_frame = self.shoulder_frame)
 
         self.subject.polar_pos  =  self.calc_polar(self.subject.vector_to_shoulder.x, self.subject.vector_to_shoulder.y, self.subject.vector_to_shoulder.z)
         self.tcp.polar_pos      =   self.calc_polar(self.tcp.vector_to_shoulder.x, self.tcp.vector_to_shoulder.y, self.tcp.vector_to_shoulder.z)
@@ -75,13 +75,11 @@ class Error(object):
         to_pub = "[subject, tcp, subject polar, tcp polar, diff]: [" + subject + ", " + tcp + ", " + subject_polar + ", " + tcp_polar + ", " + diff + "]"
         self.error_class_data_pub.publish(to_pub)
 
-    def transform_position(self, position, current_frame, target_frame, transform_waiting_duration=4.0):
+    def transform_position(self, position, source_frame, target_frame, transform_waiting_duration=4.0):
         point_stamped = PointStamped()
-        point_stamped.header.frame_id = current_frame
-        point_stamped.point.x = position.x
-        point_stamped.point.y = position.y
-        point_stamped.point.z = position.z
-        self.tf_listener.waitForTransform(current_frame, target_frame, rospy.Time(0),rospy.Duration(transform_waiting_duration))
+        point_stamped.header.frame_id = source_frame
+        point_stamped.point = position
+        self.tf_listener.waitForTransform(source_frame, target_frame, rospy.Time(0),rospy.Duration(transform_waiting_duration))
         point_transformed = self.tf_listener.transformPoint(target_frame, point_stamped)
         return point_transformed.point
 
