@@ -150,7 +150,7 @@ class Main_TR_CL:
                 nengo.Connection(error_node[0], save_error_NF[1])
 
     def get_val(self, t):
-        return self.error.error
+        return self.error.get_val(t)
 
     def get_tcp_pos_x(self, t):
         return self.error.tcp.position.x

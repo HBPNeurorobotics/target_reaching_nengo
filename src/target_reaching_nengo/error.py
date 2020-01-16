@@ -50,10 +50,13 @@ class Error(object):
         self.tcp.position.z = 0.0
         target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
         self.target_position_sub = rospy.Subscriber(target_position_topic, PointStamped, self.target_position_callback, queue_size=1)
+        self.last_target_position_received_time = None
+        self.target_position_secs_tolerance = rospy.get_param('~target_position_secs_tolerance', 0.5)
 
     def target_position_callback(self, data):
         self.subject.position = data.point
         self.subject_frame = data.header.frame_id
+        self.last_target_position_received_time = rospy.get_rostime()
 
         self.subject.vector_to_shoulder = self.transform_position(self.subject.position, self.subject_frame, target_frame = self.shoulder_frame)
         self.tcp.vector_to_shoulder = self.transform_position(self.tcp.position, self.tcp_frame, target_frame = self.shoulder_frame)
@@ -83,8 +86,17 @@ class Error(object):
         point_transformed = self.tf_listener.transformPoint(target_frame, point_stamped)
         return point_transformed.point
 
+    def check_error(self):
+        if self.last_target_position_received_time is None:
+            return
+        now = rospy.get_rostime()
+        from_last_target_position_until_now = now - self.last_target_position_received_time
+        if from_last_target_position_until_now.to_sec() > self.target_position_secs_tolerance:
+            self.error = [0.0, 0.0, 0.0]
+
     #  um aus main klassen error zu bekommen
     def get_val(self, t):
+        self.check_error()
         return self.error
 
     #  um aus main klassen die position  von tcp zu bekommen
