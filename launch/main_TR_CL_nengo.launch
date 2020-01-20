@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="Main_TR_CL_nengo_node" pkg="target_reaching_nengo" type="main_TR_CL_node.py" output="screen">
+  </node>
+</launch>
