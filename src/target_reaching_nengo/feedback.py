@@ -29,6 +29,7 @@ class Feedback(object):
                 self.threshold_mapping[0][sensor_joints[i]] = threshold[0][i]
                 self.threshold_mapping[1][sensor_joints[i]] = threshold[1][i]
         self.feedback_data_pub = rospy.Publisher("/feedback_data_pub", String, queue_size = 1)
+        self.joint_states_topic = rospy.get_param('~joint_states_topic', '/joint_states')
 
     def callback(self, data):
         for i in range(len(self.arm.name)):
@@ -67,8 +68,7 @@ class Feedback(object):
             else:
                 return 0
 
-        joint_states_topic = rospy.get_param('~joint_states_topic', '/joint_states')
-        sub = rospy.Subscriber(joint_states_topic, JointState, self.callback, queue_size=1)
+        sub = rospy.Subscriber(self.joint_states_topic, JointState, self.callback, queue_size=1)
         net = nengo.Network(label=label)
         with net:
             net.input = nengo.Node(get_feedback_effort)
@@ -122,7 +122,7 @@ class Feedback(object):
                 newList.append(j * 0.8)
             return newList
 
-        sub = rospy.Subscriber('/joint_states', JointState, self.callback, queue_size=1)
+        sub = rospy.Subscriber(self.joint_states_topic, JointState, self.callback, queue_size=1)
         net = nengo.Network(label=label)
         with net:
 
