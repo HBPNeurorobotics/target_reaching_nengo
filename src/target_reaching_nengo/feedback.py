@@ -66,7 +66,8 @@ class Feedback(object):
             else:
                 return 0
 
-        sub = rospy.Subscriber('/joint_states', JointState, self.callback, queue_size=1)
+        joint_states_topic = rospy.get_param('~joint_states_topic', '/joint_states')
+        sub = rospy.Subscriber(joint_states_topic, JointState, self.callback, queue_size=1)
         net = nengo.Network(label=label)
         with net:
             net.input = nengo.Node(get_feedback_effort)

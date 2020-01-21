@@ -10,10 +10,9 @@ from target_reaching_common import GenerateCSV_data
 
 class Main_TR_CL:
     def __init__(self):
-        robot = rospy.get_param('~robot', 'hbp')
-        arm_1_joint_cmd_pos_name = '/' + robot + '/arm_1_joint/cmd_pos'
-        arm_2_joint_cmd_pos_name = '/' + robot + '/arm_2_joint/cmd_pos'
-        arm_3_joint_cmd_pos_name = '/' + robot + '/arm_3_joint/cmd_pos'
+        arm_1_joint_cmd_pos_name = rospy.get_param('~arm_1_joint_cmd_pos_name', '/hbp/arm_1_joint/cmd_pos')
+        arm_2_joint_cmd_pos_name = rospy.get_param('~arm_2_joint_cmd_pos_name', '/hbp/arm_2_joint/cmd_pos')
+        arm_3_joint_cmd_pos_name = rospy.get_param('~arm_3_joint_cmd_pos_name', '/hbp/arm_3_joint/cmd_pos')
         voluntary_joints = [[arm_2_joint_cmd_pos_name],
                             [arm_1_joint_cmd_pos_name],
                             [arm_2_joint_cmd_pos_name,
