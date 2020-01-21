@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="arm_1_joint_cmd_pos_name" default="/iiwa/arm_j1_position_controller/command" />
+  <arg name="arm_2_joint_cmd_pos_name" default="/iiwa/arm_j2_position_controller/command" />
+  <arg name="arm_3_joint_cmd_pos_name" default="/iiwa/arm_j3_position_controller/command" />
+  <arg name="up_down_lower_limit" default="[-2.8]" />
+  <arg name="up_down_upper_limit" default="[2.8]" />
+  <arg name="left_right_lower_limit" default="[-2.8]" />
+  <arg name="left_right_upper_limit" default="[2.8]" />
+  <arg name="near_far_lower_limit" default="[-2.8, -2.8]" />
+  <arg name="near_far_upper_limit" default="[2.8, 2.8]" />
+  <arg name="joint_states_topic" default="/iiwa/joint_states" />
+  <arg name="shoulder_frame" default="iiwa_link_0" />
+  <arg name="tcp_frame" default="base_link_link" />
+  <node name="Main_TR_CL_nengo_node" pkg="target_reaching_nengo" type="main_TR_CL_node.py" output="screen">
+    <param name="arm_1_joint_cmd_pos_name" value="$(arg arm_1_joint_cmd_pos_name)" />
+    <param name="arm_2_joint_cmd_pos_name" value="$(arg arm_2_joint_cmd_pos_name)" />
+    <param name="arm_3_joint_cmd_pos_name" value="$(arg arm_3_joint_cmd_pos_name)" />
+    <rosparam param="up_down_lower_limit" subst_value="True">$(arg up_down_lower_limit)</rosparam>
+    <rosparam param="up_down_upper_limit" subst_value="True">$(arg up_down_upper_limit)</rosparam>
+    <rosparam param="left_right_lower_limit" subst_value="True">$(arg left_right_lower_limit)</rosparam>
+    <rosparam param="left_right_upper_limit" subst_value="True">$(arg left_right_upper_limit)</rosparam>
+    <rosparam param="near_far_lower_limit" subst_value="True">$(arg near_far_lower_limit)</rosparam>
+    <rosparam param="near_far_upper_limit" subst_value="True">$(arg near_far_upper_limit)</rosparam>
+    <param name="joint_states_topic" value="$(arg joint_states_topic)" />
+    <param name="shoulder_frame" value="$(arg shoulder_frame)" />
+    <param name="tcp_frame" value="$(arg tcp_frame)" />
+  </node>
+</launch>
