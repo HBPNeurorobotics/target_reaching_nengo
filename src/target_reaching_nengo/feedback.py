@@ -17,9 +17,9 @@ class Feedback(object):
         self.sensor_joints = sensor_joints
         self.neuron_number = neuron_number # for visualization of position feedback
         self.arm = JointState()
-        self.arm.position=[0.0 for i in range(6)]
-        self.arm.effort= [0.0 for i in range(6)]
-        self.arm.name = ['' for i in range(6)]
+        self.arm.name = rospy.get_param('~joint_names', ['arm_1_joint', 'arm_2_joint', 'arm_3_joint', 'arm_4_joint', 'arm_5_joint', 'arm_6_joint'])
+        self.arm.position=[0.0 for i in range(len(self.arm.name))]
+        self.arm.effort= [0.0 for i in range(len(self.arm.name))]
         self.avg = []
         self.threshold_mapping = np.array(
             [[600,    620,    650,    1000,   200,    1000],    # positiv threshold
@@ -30,11 +30,12 @@ class Feedback(object):
                 self.threshold_mapping[1][sensor_joints[i]] = threshold[1][i]
         self.feedback_data_pub = rospy.Publisher("/feedback_data_pub", String, queue_size = 1)
 
-    # TODO: 1) arm joints are not necessary first in the data, 2) only arm joints are needed
     def callback(self, data):
-        self.arm.position = data.position
-        self.arm.name = data.name
-        self.arm.effort = data.effort
+        for i in range(len(self.arm.name)):
+            for j in range(len(data.name)):
+                if self.arm.name[i] == data.name[j]:
+                    self.arm.position[i] = data.position[j]
+                    self.arm.effort[i] = data.effort[j]
 
     def get_network_effort(self, label):
         def get_feedback_effort(t):

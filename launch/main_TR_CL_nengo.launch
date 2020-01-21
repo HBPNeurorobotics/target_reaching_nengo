@@ -12,6 +12,7 @@
   <arg name="joint_states_topic" default="/joint_states" />
   <arg name="shoulder_frame" default="arm_base_link" />
   <arg name="tcp_frame" default="arm_tcp_link" />
+  <arg name="joint_names" default="['arm_1_joint', 'arm_2_joint', 'arm_3_joint', 'arm_4_joint', 'arm_5_joint', 'arm_6_joint']" />
   <node name="Main_TR_CL_nengo_node" pkg="target_reaching_nengo" type="main_TR_CL_node.py" output="screen">
     <param name="arm_1_joint_cmd_pos_name" value="$(arg arm_1_joint_cmd_pos_name)" />
     <param name="arm_2_joint_cmd_pos_name" value="$(arg arm_2_joint_cmd_pos_name)" />
@@ -25,5 +26,6 @@
     <param name="joint_states_topic" value="$(arg joint_states_topic)" />
     <param name="shoulder_frame" value="$(arg shoulder_frame)" />
     <param name="tcp_frame" value="$(arg tcp_frame)" />
+    <rosparam param="joint_names" subst_value="True">$(arg joint_names)</rosparam>
   </node>
 </launch>
