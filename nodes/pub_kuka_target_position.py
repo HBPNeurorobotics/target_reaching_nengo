@@ -13,23 +13,23 @@ def to_point_stamped(frame_id, position):
                         frame_id=frame_id),
                         point=position)
 
-#def get_sphere_marker(frame_id, scale=0.2, transparency=0.7):
-    #marker = Marker()
-    #marker.header.frame_id = frame_id
-    #marker.type = marker.SPHERE
-    #marker.action = marker.ADD
-    #marker.scale.x = scale
-    #marker.scale.y = scale
-    #marker.scale.z = scale
-    #marker.color.a = transparency
-    #marker.color.r = 1.0
-    #marker.color.g = 0.0
-    #marker.color.b = 0.0
-    #marker.pose.orientation.w = 1.0
-    #marker.pose.position.x = 0.0
-    #marker.pose.position.y = 0.0
-    #marker.pose.position.z = 0.0
-    #return marker
+def get_sphere_marker(frame_id, scale=0.2, transparency=0.7):
+    marker = Marker()
+    marker.header.frame_id = frame_id
+    marker.type = marker.SPHERE
+    marker.action = marker.ADD
+    marker.scale.x = scale
+    marker.scale.y = scale
+    marker.scale.z = scale
+    marker.color.a = transparency
+    marker.color.r = 1.0
+    marker.color.g = 0.0
+    marker.color.b = 0.0
+    marker.pose.orientation.w = 1.0
+    marker.pose.position.x = 0.0
+    marker.pose.position.y = 0.0
+    marker.pose.position.z = 0.0
+    return marker
 
 #def get_model_state(model_name, reference_frame):
     #model_state = ModelState()
@@ -92,9 +92,9 @@ class PubKukaTarget:
         target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
         self.target_position_pub = rospy.Publisher(target_position_topic, PointStamped, queue_size=1)
 
-        #sphere_marker_pub_topic = rospy.get_param('~sphere_marker_pub_topic', '/sphere_marker')
-        #self.sphere_marker_pub = rospy.Publisher(sphere_marker_pub_topic, Marker, queue_size=1)
-        #self.sphere_marker = get_sphere_marker(self.target_model_state.reference_frame)
+        sphere_marker_pub_topic = rospy.get_param('~sphere_marker_pub_topic', '/sphere_marker')
+        self.sphere_marker_pub = rospy.Publisher(sphere_marker_pub_topic, Marker, queue_size=1)
+        self.sphere_marker = get_sphere_marker(self.target_model_state.reference_frame)
 
     def gazebo_link_states_cb(self, link_states):
         sphere_position = None
@@ -175,8 +175,8 @@ class PubKukaTarget:
     def publish_target_position(self):
         if self.target_position is not None:
             self.target_position_pub.publish(self.target_position)
-            #self.sphere_marker.pose.position = self.target_position.point
-            #self.sphere_marker_pub.publish(self.sphere_marker)
+            self.sphere_marker.pose.position = self.target_position.point
+            self.sphere_marker_pub.publish(self.sphere_marker)
 
 if __name__== '__main__':
     rospy.init_node('pub_target')
