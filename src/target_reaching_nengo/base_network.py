@@ -45,7 +45,7 @@ class Base_network():
                     if abs(self.error[1]) >= 1:
                         self._joints_pub[1][i].publish(x[i])
                 # LEFT RIGHT
-                else:
+                else if self._joints_pub[0][i] == self.arm_1_joint_cmd_pos_name:
                     if abs(self.error[2]) >= 1:
                         self._joints_pub[1][i].publish(x[i])
 
