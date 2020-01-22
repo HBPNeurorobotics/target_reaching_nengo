@@ -2,7 +2,7 @@
 <launch>
   <arg name="arm_1_joint_cmd_pos_name" default="/iiwa/arm_j1_position_controller/command" />
   <arg name="arm_2_joint_cmd_pos_name" default="/iiwa/arm_j2_position_controller/command" />
-  <arg name="arm_3_joint_cmd_pos_name" default="/iiwa/arm_j3_position_controller/command" />
+  <arg name="arm_3_joint_cmd_pos_name" default="/iiwa/arm_j4_position_controller/command" />
   <arg name="up_down_lower_limit" default="[-2.8]" />
   <arg name="up_down_upper_limit" default="[2.8]" />
   <arg name="left_right_lower_limit" default="[-2.8]" />
