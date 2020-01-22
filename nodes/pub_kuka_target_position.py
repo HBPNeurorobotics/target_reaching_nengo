@@ -47,7 +47,7 @@ def to_point_stamped(frame_id, position):
 
 class PubKukaTarget:
     def __init__(self):
-        self.target_position = to_point_stamped('iiwa_link_0', Point(0.35, 0.35, 0.5))
+        self.target_position = to_point_stamped('iiwa_link_0', Point(-0.2, -0.1, 0.65))
 
         #self.target_base_x = rospy.get_param('~target_base_x', 0.5)
         #self.target_base_y = rospy.get_param('~target_base_y', 0.4)
