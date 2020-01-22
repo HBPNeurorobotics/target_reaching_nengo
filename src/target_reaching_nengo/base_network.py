@@ -29,6 +29,7 @@ class Base_network():
         self.arm_3_joint_cmd_pos_name = arm_3_joint_cmd_pos_name
         self.last_duplette = None
         self.last_used_duplette_index = -1
+        self.feedback = None
 
     def publish_topic(self, t, x):
         if self.use_stim:
@@ -39,15 +40,27 @@ class Base_network():
                 # NEAR FAR
                 if self._joints_pub[0][i] == self.arm_3_joint_cmd_pos_name:
                     if abs(self.error[0]) >= 1:
-                        self._joints_pub[1][i].publish(x[i])
+                        if self.feedback is None:
+                            self._joints_pub[1][i].publish(x[i])
+                        else:
+                            next_pos = self.feedback.arm.position + 0.1 * (x[i] - self.feedback.arm.position)
+                            self._joints_pub[1][i].publish(next_pos)
                 # UP DOWN
                 elif self._joints_pub[0][i] == self.arm_2_joint_cmd_pos_name:
                     if abs(self.error[1]) >= 1:
-                        self._joints_pub[1][i].publish(x[i])
+                        if self.feedback is None:
+                            self._joints_pub[1][i].publish(x[i])
+                        else:
+                            next_pos = self.feedback.arm.position + 0.1 * (x[i] - self.feedback.arm.position)
+                            self._joints_pub[1][i].publish(next_pos)
                 # LEFT RIGHT
                 elif self._joints_pub[0][i] == self.arm_1_joint_cmd_pos_name:
                     if abs(self.error[2]) >= 1:
-                        self._joints_pub[1][i].publish(x[i])
+                        if self.feedback is None:
+                            self._joints_pub[1][i].publish(x[i])
+                        else:
+                            next_pos = self.feedback.arm.position + 0.1 * (x[i] - self.feedback.arm.position)
+                            self._joints_pub[1][i].publish(next_pos)
 
     def set_error_near_far(self, x):
         self.error[0] = x

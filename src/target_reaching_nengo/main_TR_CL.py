@@ -40,7 +40,7 @@ class Main_TR_CL:
         err = 0.05
         self.error = Error(subject_name = 'target_reaching_subject', threshold = [ [-err, err],  [-err, err], [-err, err]])
 
-        feedback = Feedback(neuron_number = neuron_number)
+        base_network.feedback = Feedback(neuron_number = neuron_number)
         csv_x = GenerateCSV_data(file_name ='x')
         csv_y = GenerateCSV_data(file_name ='y')
         csv_z = GenerateCSV_data(file_name ='z')
@@ -91,9 +91,9 @@ class Main_TR_CL:
                 joint3_max_val = math.degrees(np.max(near_far_upper_limit[1]))
 
                 # TODO: change from degrees to radians if possible
-                net_feedback_joint3_NF = feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= joint3_max_val, min_val= joint3_min_val)
-                net_feedback_joint2_HR_NF = feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= joint2_max_val, min_val= joint2_min_val)
-                net_feedback_joint1_LR = feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= joint1_max_val, min_val= joint1_min_val)
+                net_feedback_joint3_NF = base_network.feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= joint3_max_val, min_val= joint3_min_val)
+                net_feedback_joint2_HR_NF = base_network.feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= joint2_max_val, min_val= joint2_min_val)
+                net_feedback_joint1_LR = base_network.feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= joint1_max_val, min_val= joint1_min_val)
 
                 nengo.Connection(net_feedback_joint3_NF.output, net_near_far.input[1])
                 nengo.Connection(net_feedback_joint2_HR_NF.output, net_up_down.input[1])
