@@ -13,6 +13,7 @@ class Main_TR_CL:
         arm_1_joint_cmd_pos_name = rospy.get_param('~arm_1_joint_cmd_pos_name', '/hbp/arm_1_joint/cmd_pos')
         arm_2_joint_cmd_pos_name = rospy.get_param('~arm_2_joint_cmd_pos_name', '/hbp/arm_2_joint/cmd_pos')
         arm_3_joint_cmd_pos_name = rospy.get_param('~arm_3_joint_cmd_pos_name', '/hbp/arm_3_joint/cmd_pos')
+        arm_3_joint_index = rospy.get_param('~arm_3_joint_index', 3)
         voluntary_joints = [[arm_2_joint_cmd_pos_name],
                             [arm_1_joint_cmd_pos_name],
                             [arm_2_joint_cmd_pos_name,
@@ -91,7 +92,7 @@ class Main_TR_CL:
                 joint3_max_val = math.degrees(np.max(near_far_upper_limit[1]))
 
                 # TODO: change from degrees to radians if possible
-                net_feedback_joint3_NF = base_network.feedback.get_network_position(label= 'FB: near_far', joint= 3, max_val= joint3_max_val, min_val= joint3_min_val)
+                net_feedback_joint3_NF = base_network.feedback.get_network_position(label= 'FB: near_far', joint= arm_3_joint_index, max_val= joint3_max_val, min_val= joint3_min_val)
                 net_feedback_joint2_HR_NF = base_network.feedback.get_network_position(label= 'FB: up_down and near_far' , joint= 2, max_val= joint2_max_val, min_val= joint2_min_val)
                 net_feedback_joint1_LR = base_network.feedback.get_network_position(label= 'FB: left_right', joint= 1, max_val= joint1_max_val, min_val= joint1_min_val)
 
