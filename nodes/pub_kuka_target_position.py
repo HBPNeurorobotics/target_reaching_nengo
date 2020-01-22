@@ -89,8 +89,8 @@ class PubKukaTarget:
             #error_topic = rospy.get_param('~error_topic', '/error')
             #self.error_sub = rospy.Subscriber(error_topic, Float64MultiArray, self.error_cb, queue_size=1)
 
-        #target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
-        #self.target_position_pub = rospy.Publisher(target_position_topic, PointStamped, queue_size=1)
+        target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
+        self.target_position_pub = rospy.Publisher(target_position_topic, PointStamped, queue_size=1)
 
         #sphere_marker_pub_topic = rospy.get_param('~sphere_marker_pub_topic', '/sphere_marker')
         #self.sphere_marker_pub = rospy.Publisher(sphere_marker_pub_topic, Marker, queue_size=1)
