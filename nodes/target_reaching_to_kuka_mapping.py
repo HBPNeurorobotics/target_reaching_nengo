@@ -6,6 +6,7 @@ import actionlib
 from sensor_msgs.msg import JointState
 from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
 from trajectory_msgs.msg import JointTrajectoryPoint
+from std_srvs.srv import Trigger
 
 class TargetReachingToKUKAMapping:
     def __init__(self):
@@ -28,6 +29,22 @@ class TargetReachingToKUKAMapping:
         self.arm_traj_client = actionlib.SimpleActionClient(follow_joint_trajectory_param, FollowJointTrajectoryAction)
         self.pos_diff_tolerance = rospy.get_param('~pos_diff_tolerance', 0.009)
         self.arm_3_joint_index = rospy.get_param('~arm_3_joint_index', 3)
+        self.move_to_standby_server = rospy.Service('head/move_to_standby', Trigger, self._move_to_standby)
+
+    def _move_to_standby(self, req):
+        self.move_to_standby()
+        return {'success': True, 'message': 'Moved to standby'}
+
+    def move_to_standby(self, duration=0.5):
+        positions_to_send = [0.0 for i in range(len(self.joint_names))]
+        arm_goal = FollowJointTrajectoryGoal()
+        arm_goal.trajectory.joint_names = self.joint_names
+        waypoint = JointTrajectoryPoint()
+        for i in range(len(self.joint_names)):
+            waypoint.positions = positions_to_send
+        waypoint.time_from_start = rospy.Duration.from_sec(duration)
+        arm_goal.trajectory.points.append(waypoint)
+        self.arm_traj_client.send_goal(arm_goal)
 
     def cmd_callback(self, cmd, joint_name):
         self.has_joint_cmd = True
