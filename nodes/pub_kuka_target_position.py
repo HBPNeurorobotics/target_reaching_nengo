@@ -53,7 +53,7 @@ class PubKukaTarget:
         #self.target_base_z = rospy.get_param('~target_base_z', 1.3)
 
         target_frame = rospy.get_param('~target_frame', 'iiwa_link_0')
-        self.target_position = to_point_stamped(target_frame, Point(-0.2, -0.1, 0.65))
+        self.target_position = to_point_stamped(target_frame, Point(-0.42, 0.18, 1.18))
 
         #gazebo_target_name = rospy.get_param('~gazebo_target_name', 'target_reaching_subject')
         #self.gazebo_target_link_name = gazebo_target_name + '::' + gazebo_target_name
