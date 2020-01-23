@@ -30,6 +30,7 @@ class Base_network():
         self.last_duplette = None
         self.last_used_duplette_index = -1
         self.feedback = None
+        self.next_pos_delta_factor = rospy.get_param('~next_pos_delta_factor', 1.)
 
     def publish_topic(self, t, x):
         if self.use_stim:
@@ -43,7 +44,7 @@ class Base_network():
                         if self.feedback is None:
                             self._joints_pub[1][i].publish(x[i])
                         else:
-                            next_pos = self.feedback.arm.position[i] + 0.1 * (x[i] - self.feedback.arm.position[i])
+                            next_pos = self.feedback.arm.position[i] + self.next_pos_delta_factor * (x[i] - self.feedback.arm.position[i])
                             self._joints_pub[1][i].publish(next_pos)
                 # UP DOWN
                 elif self._joints_pub[0][i] == self.arm_2_joint_cmd_pos_name:
@@ -51,7 +52,7 @@ class Base_network():
                         if self.feedback is None:
                             self._joints_pub[1][i].publish(x[i])
                         else:
-                            next_pos = self.feedback.arm.position[i] + 0.1 * (x[i] - self.feedback.arm.position[i])
+                            next_pos = self.feedback.arm.position[i] + self.next_pos_delta_factor * (x[i] - self.feedback.arm.position[i])
                             self._joints_pub[1][i].publish(next_pos)
                 # LEFT RIGHT
                 elif self._joints_pub[0][i] == self.arm_1_joint_cmd_pos_name:
@@ -59,7 +60,7 @@ class Base_network():
                         if self.feedback is None:
                             self._joints_pub[1][i].publish(x[i])
                         else:
-                            next_pos = self.feedback.arm.position[i] + 0.1 * (x[i] - self.feedback.arm.position[i])
+                            next_pos = self.feedback.arm.position[i] + self.next_pos_delta_factor * (x[i] - self.feedback.arm.position[i])
                             self._joints_pub[1][i].publish(next_pos)
 
     def set_error_near_far(self, x):
