@@ -2,7 +2,6 @@
 
 import rospy
 from std_msgs.msg import Float64, String
-from visuomotor_manager import ArmManager
 import actionlib
 from sensor_msgs.msg import JointState
 from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
