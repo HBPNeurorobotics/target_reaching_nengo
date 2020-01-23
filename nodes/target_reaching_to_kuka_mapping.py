@@ -60,7 +60,6 @@ class TargetReachingToKUKAMapping:
                     self.has_joint_state = True
 
     def send_arm_trajectory2(self, duration=0.5):
-        self.arm_traj_client.cancel_all_goals()
         positions_to_send = [0.0 for i in range(len(self.joint_names))]
         positions_to_send[0] = 1.
         #positions_to_send[1] = 0.5
@@ -72,6 +71,7 @@ class TargetReachingToKUKAMapping:
             waypoint.positions = positions_to_send
         waypoint.time_from_start = rospy.Duration.from_sec(duration)
         arm_goal.trajectory.points.append(waypoint)
+        self.arm_traj_client.cancel_all_goals()
         self.arm_traj_client.send_goal(arm_goal)
 
     def send_arm_trajectory(self, duration=0.5):
@@ -109,8 +109,9 @@ def main(argv=None):
     mapping = TargetReachingToKUKAMapping()
     rospy.loginfo("TargetReachingToKUKAMapping initialized")
     rate = rospy.Rate(40)
+    mapping.send_arm_trajectory2()
     while not rospy.is_shutdown():
-        mapping.send_arm_trajectory2()
+        #mapping.send_arm_trajectory()
         rate.sleep()
 
 if __name__ == "__main__":
