@@ -39,6 +39,7 @@ class TargetReachingToKUKAMapping:
         return {'success': True, 'message': 'Moved to standby'}
 
     def move_to_standby(self, duration=0.5):
+        self.arm_traj_client.cancel_all_goals()
         positions_to_send = [0.0 for i in range(len(self.joint_names))]
         arm_goal = FollowJointTrajectoryGoal()
         arm_goal.trajectory.joint_names = self.joint_names
@@ -88,7 +89,7 @@ class TargetReachingToKUKAMapping:
             if all(diff <= self.pos_diff_tolerance for diff in pos_diff):
                 return
         self.last_positions_to_send = positions_to_send
-        to_pub = "pos to send: {}".format(positions_to_send)
+        to_pub = "self.arm_joint_cmds: {}, pos to send: {}".format(self.arm_joint_cmds, positions_to_send)
         self.received_joint_cmds_pub.publish(to_pub)
         self.arm_joint_cmds = {}
         arm_goal = FollowJointTrajectoryGoal()
@@ -98,6 +99,7 @@ class TargetReachingToKUKAMapping:
             waypoint.positions = positions_to_send
         waypoint.time_from_start = rospy.Duration.from_sec(duration)
         arm_goal.trajectory.points.append(waypoint)
+        self.arm_traj_client.cancel_all_goals()
         self.arm_traj_client.send_goal(arm_goal)
 
 def main(argv=None):
