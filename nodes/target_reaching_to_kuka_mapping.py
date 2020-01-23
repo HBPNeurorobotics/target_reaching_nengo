@@ -16,6 +16,7 @@ class TargetReachingToKUKAMapping:
         self.joint_state_sub = rospy.Subscriber(self.joint_states_topic, JointState, self.joint_states_callback, queue_size=1)
         self.arm_joint_cmds = {}
         self.last_positions_to_send = []
+        self.last_joint_state = [0.0 for i in range(len(self.joint_names))]
         arm_1_joint_cmd_pos_name = rospy.get_param('~arm_1_joint_cmd_pos_name')
         arm_2_joint_cmd_pos_name = rospy.get_param('~arm_2_joint_cmd_pos_name')
         arm_3_joint_cmd_pos_name = rospy.get_param('~arm_3_joint_cmd_pos_name')
@@ -26,6 +27,7 @@ class TargetReachingToKUKAMapping:
         follow_joint_trajectory_param = rospy.get_param('~follow_joint_trajectory_param')
         self.arm_traj_client = actionlib.SimpleActionClient(follow_joint_trajectory_param, FollowJointTrajectoryAction)
         self.pos_diff_tolerance = rospy.get_param('~pos_diff_tolerance', 0.009)
+        self.arm_3_joint_index = rospy.get_param('~arm_3_joint_index', 3)
 
     def cmd_callback(self, cmd, joint_name):
         self.has_joint_cmd = True
@@ -43,9 +45,11 @@ class TargetReachingToKUKAMapping:
         self.received_joint_cmds_pub.publish(to_pub)
 
     def joint_states_callback(self, joint_state):
-        self.last_joint_state = list(joint_state.position[0:len(self.joint_names)])
-        if not self.has_joint_state:
-            self.has_joint_state = True
+        for i in range(len(self.joint_names)):
+            for j in range(len(joint_state.name)):
+                if self.joint_names[i] == joint_state.name[j]:
+                    self.last_joint_state[i] = joint_state.position[j]
+                    self.has_joint_state = True
 
     def send_arm_trajectory(self, duration=0.5):
         if not self.has_joint_state or not self.has_joint_cmd:
@@ -56,9 +60,9 @@ class TargetReachingToKUKAMapping:
         if "arm_2_joint" in self.arm_joint_cmds:
             positions_to_send[1] = self.arm_joint_cmds["arm_2_joint"]
         if "arm_3_joint" in self.arm_joint_cmds:
-            positions_to_send[2] = self.arm_joint_cmds["arm_3_joint"]
-        for i in range(3,6):
-            positions_to_send[i] = 0.0
+            positions_to_send[self.arm_3_joint_index - 1] = self.arm_joint_cmds["arm_3_joint"]
+        #for i in range(3,6):
+            #positions_to_send[i] = 0.0
         if self.last_positions_to_send:
             pos_diff = list(map(lambda x,y:abs(x-y), self.last_positions_to_send, positions_to_send))
             if all(diff <= self.pos_diff_tolerance for diff in pos_diff):

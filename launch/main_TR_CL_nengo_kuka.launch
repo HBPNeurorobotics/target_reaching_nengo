@@ -26,6 +26,7 @@
     <param name="joint_states_topic" value="$(arg joint_states_topic)" />
     <rosparam param="joint_names" subst_value="True">$(arg joint_names)</rosparam>
     <param name="follow_joint_trajectory_param" value="$(arg follow_joint_trajectory_param)" />
+    <param name="arm_3_joint_index" value="$(arg arm_3_joint_index)" />
   </node>
 
   <node name="Main_TR_CL_nengo_node" pkg="target_reaching_nengo" type="main_TR_CL_node.py" output="screen">
