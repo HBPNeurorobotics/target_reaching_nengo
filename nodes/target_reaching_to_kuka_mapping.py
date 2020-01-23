@@ -88,6 +88,8 @@ class TargetReachingToKUKAMapping:
             if all(diff <= self.pos_diff_tolerance for diff in pos_diff):
                 return
         self.last_positions_to_send = positions_to_send
+        to_pub = "pos to send: {}".format(positions_to_send)
+        self.received_joint_cmds_pub.publish(to_pub)
         self.arm_joint_cmds = {}
         arm_goal = FollowJointTrajectoryGoal()
         arm_goal.trajectory.joint_names = self.joint_names
