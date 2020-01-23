@@ -53,17 +53,6 @@ class TargetReachingToKUKAMapping:
     def cmd_callback(self, cmd, joint_name):
         self.has_joint_cmd = True
         self.arm_joint_cmds[joint_name] = cmd.data
-        to_pub = "cmds [j1, j2, j3]: ["
-        if "arm_1_joint" in self.arm_joint_cmds:
-            to_pub += str(self.arm_joint_cmds["arm_1_joint"])
-        to_pub += " ,"
-        if "arm_2_joint" in self.arm_joint_cmds:
-            to_pub += str(self.arm_joint_cmds["arm_2_joint"])
-        to_pub += ", "
-        if "arm_3_joint" in self.arm_joint_cmds:
-            to_pub += str(self.arm_joint_cmds["arm_3_joint"])
-        to_pub += "]"
-        self.received_joint_cmds_pub.publish(to_pub)
 
     def joint_states_callback(self, joint_state):
         for i in range(len(self.joint_names)):
