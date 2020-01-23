@@ -30,12 +30,10 @@ class TargetReachingToKUKAMapping:
         self.pos_diff_tolerance = rospy.get_param('~pos_diff_tolerance', 0.009)
         self.arm_3_joint_index = rospy.get_param('~arm_3_joint_index', 3)
         self.move_to_standby_server = rospy.Service('/move_to_standby', Trigger, self._move_to_standby)
-        self.received_move_to_standby_req = False
 
     def _move_to_standby(self, req):
-        self.received_move_to_standby_req = True
         self.move_to_standby()
-        self.received_move_to_standby_req = False
+        self.arm_traj_client.wait_for_result()
         return {'success': True, 'message': 'Moved to standby'}
 
     def move_to_standby(self, duration=0.5):
@@ -62,7 +60,7 @@ class TargetReachingToKUKAMapping:
                     self.has_joint_state = True
 
     def send_arm_trajectory(self, duration=0.5):
-        if not self.has_joint_state or not self.has_joint_cmd or self.received_move_to_standby_req:
+        if not self.has_joint_state or not self.has_joint_cmd:
             return
         positions_to_send = self.last_joint_state
         if "arm_1_joint" in self.arm_joint_cmds:
