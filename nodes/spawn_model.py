@@ -64,7 +64,7 @@ class SpawnGazeboURDFModel:
 
 def main(argv=None):
     rospy.init_node("SpawnGazeboURDFModel")
-    spawn = SpawnGazeboURDFModel()
+    spawn = SpawnGazeboURDFModel("ball", model_sdf_xml)
     rospy.loginfo("SpawnGazeboURDFModel initialized")
     spawn.spawn_sdf()
     rate = rospy.Rate(30)
