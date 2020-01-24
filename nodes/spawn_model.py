@@ -44,7 +44,9 @@ model_sdf_xml = """
 class SpawnGazeboSDFModel:
     def __init__(self, model_name, sdf_xml):
         self._model_name = model_name
-        self._sdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_sdf_entity',
+        #self._sdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_sdf_entity',
+                                               SpawnEntity, persistent=True)
+        self._sdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_urdf_entity',
                                                SpawnEntity, persistent=True)
         self._model_msg = SpawnEntityRequest()
         self._model_msg.entity_name = self._model_name
@@ -63,11 +65,11 @@ class SpawnGazeboSDFModel:
 
 def main(argv=None):
     rospy.init_node("SpawnGazeboSDFModel")
-    rospack = rospkg.RosPack()
+    #rospack = rospkg.RosPack()
     #model_path = rospack.get_path('target_reaching_experiments') + '/gazebo_models/target_reaching_subject.sdf'
-    model_path = '$GAZEBO_MODEL_PATH/kuka_iiwa_14_prismatic_gripper/model.sdf'
-    with open(model_path, "r") as model_file:
-        product_xml = model_file.read()
+    #with open(model_path, "r") as model_file:
+        #product_xml = model_file.read()
+    product_xml = rospy.get_param('/iiwa/robot_description')
     spawn_sdf = SpawnGazeboSDFModel("my_model", product_xml)
     rospy.loginfo("SpawnGazeboSDFModel initialized")
     spawn_sdf.spawn()
