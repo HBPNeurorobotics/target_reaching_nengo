@@ -64,8 +64,8 @@ class SpawnGazeboSDFModel:
 def main(argv=None):
     rospy.init_node("SpawnGazeboSDFModel")
     rospack = rospkg.RosPack()
-    model_path = rospack.get_path('target_reaching_experiments') + '/gazebo_models/target_reaching_subject.sdf'
-    #with open("$GAZEBO_MODEL_PATH/product_0/model.sdf", "r") as f:
+    #model_path = rospack.get_path('target_reaching_experiments') + '/gazebo_models/target_reaching_subject.sdf'
+    model_path = '$GAZEBO_MODEL_PATH/kuka_iiwa_14_prismatic_gripper/model.sdf'
     with open(model_path, "r") as model_file:
         product_xml = model_file.read()
     spawn_sdf = SpawnGazeboSDFModel("my_model", product_xml)
