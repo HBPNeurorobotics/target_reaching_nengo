@@ -68,7 +68,7 @@ def main(argv=None):
     #with open("$GAZEBO_MODEL_PATH/product_0/model.sdf", "r") as f:
     with open(model_path, "r") as model_file:
         product_xml = model_file.read()
-    spawn_sdf = SpawnGazeboSDFModel("my_model", model_sdf_xml)
+    spawn_sdf = SpawnGazeboSDFModel("my_model", product_xml)
     rospy.loginfo("SpawnGazeboSDFModel initialized")
     spawn_sdf.spawn()
     rate = rospy.Rate(30)
