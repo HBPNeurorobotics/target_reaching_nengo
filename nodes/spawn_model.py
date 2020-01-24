@@ -52,7 +52,8 @@ class SpawnGazeboSDFModel:
         self._model_msg.entity_name = self._model_name
         self._sdf_xml = sdf_xml
         self._model_colors = ['Green']  #, 'Red', 'Blue', 'Orange', 'Yellow', 'Purple', 'Turquoise']
-        self._model_msg.entity_xml = sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
+        #self._model_msg.entity_xml = sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
+        self._model_msg.entity_xml = sdf_xml
         self._model_msg.initial_pose.position.x = 0.0
         self._model_msg.initial_pose.position.y = 0.0
         self._model_msg.initial_pose.position.z = 0.55
