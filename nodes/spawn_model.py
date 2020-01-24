@@ -4,6 +4,7 @@ from gazebo_msgs.srv import SpawnEntity, SpawnEntityRequest
 import numpy as np
 import rospy
 from rospy import ServiceProxy, wait_for_service
+import rospkg
 
 model_name = "model"
 model_sdf_xml = """
@@ -45,8 +46,6 @@ class SpawnGazeboSDFModel:
         self._model_name = model_name
         self._sdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_sdf_entity',
                                                SpawnEntity, persistent=True)
-        #self._urdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_urdf_entity',
-                                               #SpawnEntity, persistent=True)
         self._model_msg = SpawnEntityRequest()
         self._model_msg.entity_name = self._model_name
         self._sdf_xml = sdf_xml
@@ -64,6 +63,11 @@ class SpawnGazeboSDFModel:
 
 def main(argv=None):
     rospy.init_node("SpawnGazeboSDFModel")
+    rospack = rospkg.RosPack()
+    model_path = rospack.get_path('target_reaching_experiments') + '/gazebo_models/target_reaching_subject.sdf'
+    #with open("$GAZEBO_MODEL_PATH/product_0/model.sdf", "r") as f:
+    with open(model_path, "r") as model_file:
+        product_xml = model_file.read()
     spawn_sdf = SpawnGazeboSDFModel("my_model", model_sdf_xml)
     rospy.loginfo("SpawnGazeboSDFModel initialized")
     spawn_sdf.spawn()
