@@ -45,7 +45,7 @@ class SpawnGazeboSDFModel:
     def __init__(self, model_name, sdf_xml):
         self._model_name = model_name
         #self._sdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_sdf_entity',
-                                               SpawnEntity, persistent=True)
+                                               #SpawnEntity, persistent=True)
         self._sdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_urdf_entity',
                                                SpawnEntity, persistent=True)
         self._model_msg = SpawnEntityRequest()
