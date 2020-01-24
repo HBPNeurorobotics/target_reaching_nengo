@@ -18,14 +18,14 @@ model_sdf_xml = """
       <collision name='collision'>
         <geometry>
           <box>
-            <size>.1 .1 .1</size>
+            <size>.5 .5 .5</size>
           </box>
         </geometry>
       </collision>
       <visual name='visual'>
         <geometry>
           <box>
-            <size>.1 .1 .1</size>
+            <size>.5 .5 .5</size>
           </box>
         </geometry>
         <material>
@@ -54,7 +54,7 @@ class SpawnGazeboSDFModel:
         self._model_msg.entity_xml = sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
         self._model_msg.initial_pose.position.x = 0.0
         self._model_msg.initial_pose.position.y = 0.0
-        self._model_msg.initial_pose.position.z = 0.1
+        self._model_msg.initial_pose.position.z = 0.55
         self._model_msg.reference_frame = "world"
 
     def spawn(self):
@@ -64,7 +64,7 @@ class SpawnGazeboSDFModel:
 
 def main(argv=None):
     rospy.init_node("SpawnGazeboSDFModel")
-    spawn_sdf = SpawnGazeboSDFModel("ball", model_sdf_xml)
+    spawn_sdf = SpawnGazeboSDFModel("my_model", model_sdf_xml)
     rospy.loginfo("SpawnGazeboSDFModel initialized")
     spawn_sdf.spawn()
     rate = rospy.Rate(30)
