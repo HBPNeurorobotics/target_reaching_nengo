@@ -69,7 +69,7 @@ def main(argv=None):
     #model_path = rospack.get_path('target_reaching_experiments') + '/gazebo_models/target_reaching_subject.sdf'
     #with open(model_path, "r") as model_file:
         #product_xml = model_file.read()
-    product_xml = rospy.get_param('/iiwa/robot_description')
+    product_xml = rospy.get_param('/robot_description')
     spawn_sdf = SpawnGazeboSDFModel("my_model", product_xml)
     rospy.loginfo("SpawnGazeboSDFModel initialized")
     spawn_sdf.spawn()
