@@ -60,7 +60,6 @@ class SpawnGazeboSDFModel:
         self._model_msg.reference_frame = "world"
 
     def spawn(self):
-        self._model_msg.entity_xml = self._sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
         self._sdf_spawn_proxy(self._model_msg)
         return 'success'
 
