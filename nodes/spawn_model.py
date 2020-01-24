@@ -52,9 +52,9 @@ class SpawnGazeboURDFModel:
         self._sdf_xml = sdf_xml
         self._model_colors = ['Green']  #, 'Red', 'Blue', 'Orange', 'Yellow', 'Purple', 'Turquoise']
         self._model_msg.entity_xml = sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
-        self._model_msg.initial_pose.position.x = 0.
-        self._model_msg.initial_pose.position.y = -1.3
-        self._model_msg.initial_pose.position.z = 1.5
+        self._model_msg.initial_pose.position.x = 0.0
+        self._model_msg.initial_pose.position.y = 0.0
+        self._model_msg.initial_pose.position.z = 0.1
         self._model_msg.reference_frame = "world"
 
     def spawn_sdf(self):
