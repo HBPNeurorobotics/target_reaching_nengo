@@ -68,8 +68,8 @@ def main(argv=None):
     rospy.loginfo("SpawnGazeboSDFModel initialized")
     spawn_sdf.spawn()
     rate = rospy.Rate(30)
-    while not rospy.is_shutdown():
-        rate.sleep()
+    #while not rospy.is_shutdown():
+        #rate.sleep()
 
 if __name__ == "__main__":
     main()
