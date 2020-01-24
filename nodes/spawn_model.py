@@ -40,13 +40,13 @@ model_sdf_xml = """
 </sdf>
 """
 
-class SpawnGazeboURDFModel:
-    def __init__(self, model_name, urdf_xml):
+class SpawnGazeboSDFModel:
+    def __init__(self, model_name, sdf_xml):
         self._model_name = model_name
         self._sdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_sdf_entity',
                                                SpawnEntity, persistent=True)
-        self._urdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_urdf_entity',
-                                               SpawnEntity, persistent=True)
+        #self._urdf_spawn_proxy = rospy.ServiceProxy('/gazebo/spawn_urdf_entity',
+                                               #SpawnEntity, persistent=True)
         self._model_msg = SpawnEntityRequest()
         self._model_msg.entity_name = self._model_name
         self._sdf_xml = sdf_xml
@@ -57,16 +57,16 @@ class SpawnGazeboURDFModel:
         self._model_msg.initial_pose.position.z = 0.1
         self._model_msg.reference_frame = "world"
 
-    def spawn_sdf(self):
+    def spawn(self):
         self._model_msg.entity_xml = self._sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
         self._sdf_spawn_proxy(self._model_msg)
         return 'success'
 
 def main(argv=None):
-    rospy.init_node("SpawnGazeboURDFModel")
-    spawn = SpawnGazeboURDFModel("ball", model_sdf_xml)
-    rospy.loginfo("SpawnGazeboURDFModel initialized")
-    spawn.spawn_sdf()
+    rospy.init_node("SpawnGazeboSDFModel")
+    spawn_sdf = SpawnGazeboSDFModel("ball", model_sdf_xml)
+    rospy.loginfo("SpawnGazeboSDFModel initialized")
+    spawn_sdf.spawn()
     rate = rospy.Rate(30)
     while not rospy.is_shutdown():
         rate.sleep()
