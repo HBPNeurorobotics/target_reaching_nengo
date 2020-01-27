@@ -50,21 +50,22 @@ class SpawnGazeboSDFModel:
         self._model_msg.entity_name = self._model_name
         self._sdf_xml = sdf_xml
         self._model_colors = ['Green']  #, 'Red', 'Blue', 'Orange', 'Yellow', 'Purple', 'Turquoise']
-        self._model_msg.entity_xml = sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
+        #self._model_msg.entity_xml = sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
         self._model_msg.initial_pose.position.x = 0.0
         self._model_msg.initial_pose.position.y = 0.0
         self._model_msg.initial_pose.position.z = 0.55
         self._model_msg.reference_frame = "world"
 
     def spawn(self):
-        self._model_msg.entity_xml = self._sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
+        #self._model_msg.entity_xml = self._sdf_xml.format(model_name=model_name, color=np.random.choice(self._model_colors, size=1)[0])
         self._sdf_spawn_proxy(self._model_msg)
         return 'success'
 
 def main(argv=None):
     rospy.init_node("SpawnGazeboSDFModel")
     rospack = rospkg.RosPack()
-    model_path = rospack.get_path('iiwa_description') + '/sdf/iiwa14.sdf'
+    #model_path = rospack.get_path('iiwa_description') + '/sdf/iiwa14.sdf'
+    model_path = rospack.get_path('target_reaching_experiments') + '/gazebo_models/target_reaching_subject.sdf'
     with open(model_path, "r") as model_file:
         product_xml = model_file.read()
     spawn_sdf = SpawnGazeboSDFModel("my_model", product_xml)
