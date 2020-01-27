@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #import time
 #import timeit
 from operator import add, mul, sub
@@ -5,13 +7,13 @@ from operator import add, mul, sub
 import nengo
 import numpy as np
 
-import base_network
-import motion
+from target_reaching_nengo import Motion
+
 import rospy
 from std_msgs.msg import String
 
 
-class Voluntary(motion.Motion):
+class Voluntary(Motion):
     def __init__(self, slider, joints, start, end, label = 'voluntary', joint_mapping = None, neuron_number = 10, learning = False):
         super(self.__class__, self).__init__(joints, start, end, label, joint_mapping)
         self._slider = slider
@@ -211,4 +213,3 @@ print numbers[3:6]
             nengo.Connection(net.u_elbow, net.output[1], function=self.map_voluntary_2)
         return net
         '''
-model = nengo.Network()

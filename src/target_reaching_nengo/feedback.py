@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import math
 import operator
 from random import uniform
@@ -7,35 +9,36 @@ import numpy as np
 
 import rospy
 from sensor_msgs.msg import JointState
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, String
 
 
 class Feedback(object):
-    def __init__(self, sensor_joints=[], threshold = [], neuron_number =21):
+    def __init__(self, sensor_joints = [], threshold = [], neuron_number = 21):
         self.sensor_joints = sensor_joints
         self.neuron_number = neuron_number # for visualization of position feedback
         self.arm = JointState()
-        self.arm.position=[0.0 for i in range(7)]
-        self.arm.effort= [0.0 for i in range(7)] # 7 arm joints
-        self.arm.name = ['' for i in range(7)]
+        self.arm.name = rospy.get_param('~joint_names', ['arm_1_joint', 'arm_2_joint', 'arm_3_joint', 'arm_4_joint', 'arm_5_joint', 'arm_6_joint'])
+        self.arm.position=[0.0 for i in range(len(self.arm.name))]
+        self.arm.effort= [0.0 for i in range(len(self.arm.name))]
         self.avg = []
         self.threshold_mapping = np.array(
-            [[15,    600,    620,    650,    1000,   200,    1000],    # positiv threshold
-            [-15,   -600,   -610,   -650,   -1000,  -170,   -1000]])   # negativ threshold
+            [[600,    620,    650,    1000,   200,    1000],    # positiv threshold
+            [-600,   -610,   -650,   -1000,  -170,   -1000]])   # negativ threshold
         if len(threshold) is not 0:
             for i in range (len(self.sensor_joints)):
-                self.threshold_mapping[0][sensor_joints[i]]= threshold[0][i]
-                self.threshold_mapping[1][sensor_joints[i]]= threshold[1][i]
+                self.threshold_mapping[0][sensor_joints[i]] = threshold[0][i]
+                self.threshold_mapping[1][sensor_joints[i]] = threshold[1][i]
+        self.feedback_data_pub = rospy.Publisher("/feedback_data_pub", String, queue_size = 1)
+        self.joint_states_topic = rospy.get_param('~joint_states_topic', '/joint_states')
 
     def callback(self, data):
-        self.arm.position = data.position
-        self.arm.name = data.name
-        self.arm.effort = data.effort
+        for i in range(len(self.arm.name)):
+            for j in range(len(data.name)):
+                if self.arm.name[i] == data.name[j]:
+                    self.arm.position[i] = data.position[j]
+                    self.arm.effort[i] = data.effort[j]
 
     def get_network_effort(self, label):
-       # def callback(data):
-        #    self.arm.effort = data.effort
-
         def get_feedback_effort(t):
             if self.arm is None:
                 return 0
@@ -65,7 +68,7 @@ class Feedback(object):
             else:
                 return 0
 
-        sub = rospy.Subscriber('/joint_states', JointState, self.callback, queue_size=1)
+        sub = rospy.Subscriber(self.joint_states_topic, JointState, self.callback, queue_size=1)
         net = nengo.Network(label=label)
         with net:
             net.input = nengo.Node(get_feedback_effort)
@@ -85,47 +88,13 @@ class Feedback(object):
             #nengo.Connection(net.ens, net.output)
         return net
 
-
-
-
-
-    def get_network_delta_pos(self, label, joint):
-
-        def get_feedback_position(x):
-            # RASDIAN, DEGREE
-            return [self.arm.position[joint], math.degrees(self.arm.position[joint])]
-
-        def get_dif(x):
-            dif = abs(x[0] - x[1])
-            if dif >0.05:
-                return 1
-            else:
-                return 0
-
-        sub = rospy.Subscriber('/joint_states', JointState, self.callback, queue_size=1)
-        net = nengo.Network(label=label)
-        with net:
-            net.input = nengo.Node(get_feedback_position)
-            net.output = nengo.Node(size_in = 1)
-            ens_angle = nengo.Ensemble(500, dimensions=2, radius=3, neuron_type=nengo.Direct())
-            nengo.Connection(net.input[0], ens_angle[0])
-            nengo.Connection(ens_angle[0], ens_angle[1], synapse= 0.02)
-            nengo.Connection(ens_angle, net.output, function=get_dif)
-
-        return net
-
-
-
-
     def get_network_position(self, label, joint, max_val, min_val, noise = False):
-        #def callback(data):
-        #   self.arm.position = data.position
-        #    self.arm.name = data.name
-
-
         def get_feedback_position(x):
-            res = math.degrees(self.arm.position[joint])
-            res = min(max_val-1, max(min_val+1, res))
+            res = math.degrees(self.arm.position[joint-1])
+            #res = min(max_val-1, max(min_val+1, res)) # original
+            res = min(max_val, max(min_val, res))
+            to_pub = "[min,max]: [{:.2f}, {:.2f}], joint: {}, arm_pos: {:.2f}, deg: {:.2f} res: {:.2f}".format(min_val, max_val, joint, self.arm.position[joint-1], math.degrees(self.arm.position[joint-1]), res)
+            self.feedback_data_pub.publish(to_pub)
             return res
 
         def get_mean(x):
@@ -133,7 +102,7 @@ class Feedback(object):
 
             return res
 
-        def excit(x):
+        def exit(x):
             threshold = [1 for i in range(self.neuron_number)]
             mean =get_mean(x)
             for i in range(self.neuron_number):
@@ -153,29 +122,7 @@ class Feedback(object):
                 newList.append(j * 0.8)
             return newList
 
-        '''
-         def excit(x):
-            threshold = [1 for i in range(self.neuron_number)]
-            mean =get_mean(x)
-            for i in range(self.neuron_number):
-                d = abs(mean -i)
-                if mean == i:
-                    threshold[i] =  uniform(-5, -1) *30
-                else:
-                    if noise:
-                       # threshold[i] = uniform(-2/d, d/2)
-                       threshold[i] = uniform(-2/d, d)
-                    #else:
-                    #    if (mean+1 == i or mean-1 == i):
-                     #       threshold[i] =  uniform(-0.7, 0.5)
-            newList = []
-            for j in threshold:
-                #newList.append(j * 100)
-                newList.append(j *30)
-            return newList '''
-
-
-        sub = rospy.Subscriber('/joint_states', JointState, self.callback, queue_size=1)
+        sub = rospy.Subscriber(self.joint_states_topic, JointState, self.callback, queue_size=1)
         net = nengo.Network(label=label)
         with net:
 
@@ -188,7 +135,7 @@ class Feedback(object):
                     intercepts=[0.9 for i in range(self.neuron_number)],
                     max_rates=[10 for i in range(self.neuron_number)],
                     encoders=[[1] for i in range(self.neuron_number)])
-            nengo.Connection(net.input, net.gauss_encoding.neurons, function = excit)
+            nengo.Connection(net.input, net.gauss_encoding.neurons, function = exit)
             def get_index(x):
                 # gets index with highest value
                 index, value = max(enumerate(x), key=operator.itemgetter(1))
@@ -209,10 +156,10 @@ class Feedback(object):
 
             net.ens_calc = nengo.Ensemble(label='ens_calc', n_neurons= 100, dimensions=self.neuron_number,  neuron_type=nengo.Direct())
 
-            # ohne ensemble array: werte gehen bis 15
+            # without ensemble array: values go up to 15
             #nengo.Connection(net.gauss_encoding.neurons, net.ens_calc)
 
-            #mit ensemlbe array --> funktioniert sehr gut mit 10 neuronen in gaussian encoding
+            # with ensemlbe array --> works very well with 10 neurons in gaussian encoding
             net.ens_array = nengo.networks.EnsembleArray(
                     n_neurons=10,
                     n_ensembles=self.neuron_number)
@@ -220,7 +167,7 @@ class Feedback(object):
             nengo.Connection(net.ens_array.output, net.ens_calc)#, transform= [5] * self.neuron_number)
             net.output = nengo.Node(size_in= 1)
 
-            #neu
+            # new
             '''
             def smooth(x):
                 tau=0.01
@@ -232,7 +179,6 @@ class Feedback(object):
             nengo.Connection(net.ens_unsmoothed, net.output, function= smooth)
             '''
 
-            #alt
+            # old
             nengo.Connection(net.ens_calc, net.output, function=get_index)
         return net
-model = nengo.Network()

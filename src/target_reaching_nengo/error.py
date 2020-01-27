@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from __future__ import division
 
 import copy
@@ -9,30 +11,19 @@ from random import uniform
 import nengo
 import numpy as np
 
-#sys.path.append(os.path.join(sys.path[0],'scripts'))
-
-import item
+from target_reaching_nengo import Item
+from std_msgs.msg import String, Float64MultiArray
+from target_reaching_common import Generate_curve
 import rospy
-from gazebo_msgs.msg import LinkStates
-from std_msgs.msg import Float64
 
-# TODO: [camilo 2018.12.] ugly hack, this is horrible, change this
-sys.path.append('/home/milo/workspace/catkin_ws/src/target_reaching_nengo/scripts')
-# sys.path.append('/home/steffen/Schreibtisch/ve_nengo/snn_nengo_motion/src/nengo_ros/src_lea/scripts')
-import generateCSV_data
-import generate_curve_data
-
+import tf
+from geometry_msgs.msg import PointStamped
 
 class Error(object):
-
-    def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False, robot = 'HoLLiE'):
-        self.robot          = robot
-        self.subject        = item.Item('subject', subject_name + '::link')
-        self.cmd            = item.Item('cmd', 'cmd_TR')
-        #state               = LinkStates()
-        #self.cmd.position        = state.position
-        self.tcp            = item.Item('tcp', robot + '::hollie_real_left_hand_f1_link')
-        self.shoulder       = item.Item('shoulder', robot + '::hollie_real_left_arm_0_joint_link')
+    def __init__(self, subject_name, threshold, learning = False, n_points = 41, amplitude = 0.2, period = 2 * np.pi, phase_shift = 0, vertical_shift = 0, do_print = False, mult_with_radius = False):
+        self.subject        = Item('subject')
+        self.tcp            = Item('tcp')
+        self.shoulder       = Item('shoulder')
         self.threshold      = threshold
 
         self.learning       = learning
@@ -44,34 +35,68 @@ class Error(object):
         self.value_curve = 0.0
         self.curve_index_normed = 0.0
         self.indice_curve = 0.0
-        generate_curve_data_1 = generate_curve_data.Generate_curve(n_points, amplitude, period, phase_shift, vertical_shift, do_print)
+        generate_curve_data_1 = Generate_curve(n_points, amplitude, period, phase_shift, vertical_shift, do_print)
         self.curve_data  =  generate_curve_data_1.data
 
+        error_class_data_topic = rospy.get_param('~error_class_data_topic', '/error_class_data_pub')
+        self.error_class_data_pub = rospy.Publisher(error_class_data_topic, String, queue_size=1)
+        error_topic = rospy.get_param('~error_topic', '/error')
+        self.error_pub = rospy.Publisher(error_topic, Float64MultiArray, queue_size=1)
+        self.tf_listener = tf.TransformListener()
+        self.shoulder_frame = rospy.get_param('~shoulder_frame', 'arm_base_link')
+        self.tcp_frame = rospy.get_param('~tcp_frame', 'arm_tcp_link')
+        self.tcp.position.x = 0.0
+        self.tcp.position.y = 0.0
+        self.tcp.position.z = 0.0
+        target_position_topic = rospy.get_param('~target_position_topic', '/target_position')
+        self.target_position_sub = rospy.Subscriber(target_position_topic, PointStamped, self.target_position_callback, queue_size=1)
+        self.last_target_position_received_time = None
+        self.target_position_secs_tolerance = rospy.get_param('~target_position_secs_tolerance', 0.5)
 
+    def target_position_callback(self, data):
+        self.subject.position = data.point
+        self.subject_frame = data.header.frame_id
+        self.last_target_position_received_time = rospy.get_rostime()
 
+        self.subject.vector_to_shoulder = self.transform_position(self.subject.position, self.subject_frame, target_frame = self.shoulder_frame)
+        self.tcp.vector_to_shoulder = self.transform_position(self.tcp.position, self.tcp_frame, target_frame = self.shoulder_frame)
 
-    def callback(self, data):
-        #print 'BLA: ', self.cmd
-        self.subject.position   = data.pose[data.name.index(self.subject.topic)].position
-
-        self.tcp.position       = data.pose[data.name.index(self.tcp.topic)].position
-        self.shoulder.position  = data.pose[data.name.index(self.shoulder.topic)].position
-        # dies zeile an subject fehler schuld, nicht an tcp
-
-
-        self.subject.vector_to_shoulder = self.check_limit(self.calc_vector(self.subject.position))
-        self.tcp.vector_to_shoulder = self.calc_vector(self.tcp.position)
         self.subject.polar_pos  =  self.calc_polar(self.subject.vector_to_shoulder.x, self.subject.vector_to_shoulder.y, self.subject.vector_to_shoulder.z)
         self.tcp.polar_pos      =   self.calc_polar(self.tcp.vector_to_shoulder.x, self.tcp.vector_to_shoulder.y, self.tcp.vector_to_shoulder.z)
         self.dif = self.calc_dif()
-        #print 'POLAR: ', self.tcp.polar_pos
         if self.learning: self.error = self.calc_error_2()
         else: self.error = self.calc_error()
+        error_to_pub = Float64MultiArray()
+        error_to_pub.data = self.error
+        self.error_pub.publish(error_to_pub)
 
+        subject = "({:.2f}, {:.2f}, {:.2f})".format(self.subject.vector_to_shoulder.x, self.subject.vector_to_shoulder.y, self.subject.vector_to_shoulder.z)
+        tcp = "({:.2f}, {:.2f}, {:.2f})".format(self.tcp.vector_to_shoulder.x, self.tcp.vector_to_shoulder.y, self.tcp.vector_to_shoulder.z)
+        subject_polar = "({:.2f}, {:.2f}, {:.2f})".format(self.subject.polar_pos[0], self.subject.polar_pos[1], self.subject.polar_pos[2])
+        tcp_polar = "({:.2f}, {:.2f}, {:.2f})".format(self.tcp.polar_pos[0], self.tcp.polar_pos[1], self.tcp.polar_pos[2])
+        diff = "({:.2f}, {:.2f}, {:.2f})".format(self.dif[0], self.dif[1], self.dif[2])
+        to_pub = "[subject, tcp, subject polar, tcp polar, diff]: [" + subject + ", " + tcp + ", " + subject_polar + ", " + tcp_polar + ", " + diff + "]"
+        self.error_class_data_pub.publish(to_pub)
 
+    def transform_position(self, position, source_frame, target_frame, transform_waiting_duration=4.0):
+        point_stamped = PointStamped()
+        point_stamped.header.frame_id = source_frame
+        point_stamped.point = position
+        self.tf_listener.waitForTransform(source_frame, target_frame, rospy.Time(0),rospy.Duration(transform_waiting_duration))
+        point_transformed = self.tf_listener.transformPoint(target_frame, point_stamped)
+        return point_transformed.point
+
+    def check_error(self):
+        if self.last_target_position_received_time is None:
+            return
+        now = rospy.get_rostime()
+        from_last_target_position_until_now = now - self.last_target_position_received_time
+        if from_last_target_position_until_now.to_sec() > self.target_position_secs_tolerance:
+            self.error = [0.0, 0.0, 0.0]
 
     #  um aus main klassen error zu bekommen
     def get_val(self, t):
+        self.check_error()
         return self.error
 
     #  um aus main klassen die position  von tcp zu bekommen
@@ -114,45 +139,16 @@ class Error(object):
     def calc_polar(self, x, y, z):
         r       = math.sqrt( math.pow(x, 2) + math.pow(y, 2) + math.pow(z, 2))
         theta   = math.acos(z / r)
-        #phi     = math.atan2(y,x)
-
-        if(y < 0): phi = 2*np.pi - math.acos(x/ math.sqrt(math.pow(x,2) + math.pow(y,2)))  #math.atan2(y,x)
-        else: phi = math.acos(x/ math.sqrt(math.pow(x,2) + math.pow(y,2)))
-
+        phi     = math.atan2(y/r, x/r)
+        if phi < 0.:
+            phi += 2*np.pi
         return [r, theta, phi]
 
-    def calc_cartesian(self, r, theta, phi):
-        x = r * math.sin(theta) * math.cos(phi)
-        y = r * math.sin(theta) * math.sin(phi)
-        z = r * math.cos(theta)
-        return[x, y, z]
-
     def calc_dif(self):
-        dif = [ self.subject.polar_pos[0] - self.tcp.polar_pos[0],  # r
-                self.subject.polar_pos[1] - self.tcp.polar_pos[1],  #theta
-                self.subject.polar_pos[2] - self.tcp.polar_pos[2]]  #phi
+        dif = [self.subject.polar_pos[0] - self.tcp.polar_pos[0],  # r
+               self.subject.polar_pos[1] - self.tcp.polar_pos[1],  #theta
+               self.subject.polar_pos[2] - self.tcp.polar_pos[2]]  #phi
         return dif
-
-
-    def calc_error_old(self):
-        error = [0,0,0]
-        for i in range(3):
-            if abs(self.dif[i]) > self.threshold[i][1]:
-                error[i] = 1
-                if abs(self.dif[i]) > self.threshold[i][1]    : error[i] = 1
-                if abs(self.dif[i]) > self.threshold[i][1] * 5: error[i] = 2
-                if abs(self.dif[i]) > self.threshold[i][1] * 10: error[i] = 3
-                error[i] = error[i] * (self.dif[i] / abs(self.dif[i]))
-
-        #print '   '
-        #print 'Dif1 fern_nah: ', self.dif[0], ' upper: ', self.threshold[0][1], 'lower: ',  self.threshold[0][0], '  Error: ', error[0]
-        #print 'Dif2 hoch runter: ', self.dif[1], ' upper: ', self.threshold[1][1], 'lower: ',  self.threshold[1][0], '  Error: ', error[1]
-        #print 'Dif3 links rechts: ', self.dif[2], ' upper: ', self.threshold[2][1], 'lower: ',  self.threshold[2][0], '  Error: ', error[2]
-        #print '   '
-
-        #print 'ERROR: ', error[2]
-        return error
-
 
     def calc_error(self):
         error = [0,0,0]
@@ -166,43 +162,6 @@ class Error(object):
 
             if i == 0 and error[i] > 0:
                 error[i] = error[i] * 3
-
-        #print '   '
-        #print 'Dif1 fern_nah: ', self.dif[0], ' upper: ', self.threshold[0][1], 'lower: ',  self.threshold[0][0], '  Error: ', error[0]
-        #print 'Dif2 hoch runter: ', self.dif[1], ' upper: ', self.threshold[1][1], 'lower: ',  self.threshold[1][0], '  Error: ', error[1]
-        #print 'Dif3 links rechts: ', self.dif[2], ' upper: ', self.threshold[2][1], 'lower: ',  self.threshold[2][0], '  Error: ', error[2]
-        #print '   '
-
-        #print 'ERROR: ', error[2]
-        return error
-
-
-    def calc_error_fern_nah(self):
-        error = [0,0,0]
-        for i in range(3):
-            # damit fern nah einen starkeren fehler bekommt
-            if i == 0:
-                if abs(self.dif[i]) > self.threshold[i][1]:
-                    error[i] = 1
-                    if abs(self.dif[i]) > self.threshold[i][1]    : error[i] = 2
-                    if abs(self.dif[i]) > self.threshold[i][1] * 5: error[i] = 4
-                    if abs(self.dif[i]) > self.threshold[i][1] * 10: error[i] = 5
-                    error[i] = error[i] * (self.dif[i] / abs(self.dif[i]))
-            else:
-                if abs(self.dif[i]) > self.threshold[i][1]:
-                    error[i] = 1
-                    if abs(self.dif[i]) > self.threshold[i][1]    : error[i] = 1
-                    if abs(self.dif[i]) > self.threshold[i][1] * 5: error[i] = 2
-                    if abs(self.dif[i]) > self.threshold[i][1] * 10: error[i] = 3
-                    error[i] = error[i] * (self.dif[i] / abs(self.dif[i]))
-
-        #print '   '
-        print 'Dif1 fern_nah: ', self.dif[0], ' upper: ', self.threshold[0][1], 'lower: ',  self.threshold[0][0], '  Error: ', error[0]
-        #print 'Dif2 hoch runter: ', self.dif[1], ' upper: ', self.threshold[1][1], 'lower: ',  self.threshold[1][0], '  Error: ', error[1]
-        #print 'Dif3 links rechts: ', self.dif[2], ' upper: ', self.threshold[2][1], 'lower: ',  self.threshold[2][0], '  Error: ', error[2]
-        #print '   '
-
-        #print 'ERROR: ', error[2]
         return error
 
     def calc_error_2(self):
@@ -213,7 +172,6 @@ class Error(object):
                 if abs(self.dif[i]) > self.threshold[i][1]:
                     error[i] = 5
                     error[i] = error[i] * (self.dif[i] / abs(self.dif[i]))
-
         return error
 
 
@@ -341,5 +299,3 @@ class Error(object):
             target_pos_polar = self.calc_polar(target_pos_vector.x, target_pos_vector.y, target_pos_vector.z)
             return self.tcp.polar_pos[0] - target_pos_polar[0]
 
-
-model = nengo.Network()

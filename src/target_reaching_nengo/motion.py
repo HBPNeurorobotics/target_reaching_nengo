@@ -1,9 +1,10 @@
+#!/usr/bin/env python
+
 import nengo
 import numpy as np
 
 import rospy
 from std_msgs.msg import Float64
-
 
 class Motion(object):
     def __init__(self, joints, start, end, label, joint_mapping):
@@ -27,7 +28,6 @@ class Motion(object):
     def get_indice(self, t):
         return self.u_indice
 
-
     #ORGINAL
     def map_voluntary(self, u):
         res=[]
@@ -39,12 +39,8 @@ class Motion(object):
             res.append(tmp)
         return res
 
-
     def map_voluntary_1(self, u):
         return u * (self._end[0] - self._start[0])   + self._start[0]
 
     def map_voluntary_2(self, u):
         return u * (self._end[1] - self._start[1])   + self._start[1]
-
-
-model = nengo.Network()
